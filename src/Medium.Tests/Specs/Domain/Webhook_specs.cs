@@ -1,12 +1,12 @@
 using System;
 using Machine.Specifications;
-using Medium.Core.Domain;
+using Medium.Domain;
 
 namespace Medium.Tests.Specs.Domain
 {
     public abstract class Webhook_specs : Domain_specs
     {
-        protected static string Name = "Webhook 1";
+        protected static string Name = "Webhook Name";
         protected static Webhook Webhook;
 
         protected static void Initialize()
@@ -24,8 +24,8 @@ namespace Medium.Tests.Specs.Domain
 
         It should_not_be_null = () => Webhook.ShouldNotBeNull();
         It should_have_assigned_id = () => Webhook.Id.ShouldNotEqual(Guid.Empty);
-        It should_have_assigned_name = () => Webhook.Name.ShouldEqual(Name);
-        It should_have_assigned_code = () => Webhook.Code.ShouldEqual(Name.Trim().Replace(" ", "-").ToLowerInvariant());
+        It should_have_assigned_name = () => Webhook.Name.ShouldEqual(Name.ToLowerInvariant());
+        It should_have_assigned_endpoint = () => Webhook.Endpoint.ShouldEqual(Name.Replace(" ", "-").ToLowerInvariant());
         It should_be_enabled = () => Webhook.Enabled.ShouldBeTrue();
         It should_not_have_any_actions = () => Webhook.Actions.ShouldBeEmpty();
         It should_not_have_any_triggers = () => Webhook.Triggers.ShouldBeEmpty();
