@@ -1,4 +1,8 @@
 ﻿{
+  "name": "Medium.Tests",
+  "authors": [ "Noordwind" ],
+  "title": "Medium.Tests",
+  "version": "1.0.0-*",
   "testRunner": "mspec",
   "frameworks": {
     "netcoreapp1.1": {

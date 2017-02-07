@@ -1,0 +1,18 @@
+﻿{
+  "name": "Medium",
+  "authors": [ "Noordwind" ],
+  "title": "Medium",
+  "version": "1.0.0-*",
+  "packOptions": {
+    "licenseUrl": "https://github.com/noordwind/Medium/blob/master/LICENSE",
+    "projectUrl": "https://github.com/noordwind/Medium",
+    "packageType": "DotnetCliTool"
+  },
+  "frameworks": {
+    "netstandard1.6": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.1"
+      }
+    }
+  }
+}
