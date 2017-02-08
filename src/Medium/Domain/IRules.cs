@@ -1,7 +1,7 @@
 namespace Medium.Domain
 {
-    //Marker interface.
     public interface IRules
     {
+        string Provider { get; }
     }
 }

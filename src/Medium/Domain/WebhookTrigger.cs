@@ -10,6 +10,7 @@ namespace Medium.Domain
         private static readonly Regex NameRegex = new Regex("([a-zA-Z1-9 _\\-])\\w+", RegexOptions.Compiled);
         private ISet<string> _requesters = new HashSet<string>();  
         public string Name { get; protected set; }
+        public string Provider { get; protected set; }
         public string Type { get; protected set; }
         public object Rules { get; protected set; }
         public bool Enabled { get; protected set; }
@@ -27,11 +28,30 @@ namespace Medium.Domain
         {
         }
 
-        public WebhookTrigger(string name)
+        protected WebhookTrigger(string name)
         {
             SetName(name);
             Enable();
         }
+
+        public static WebhookTrigger Create<TRequest>(string name) 
+            where TRequest : IRequest
+            {
+                var trigger = new WebhookTrigger(name);
+                trigger.SetType<TRequest>();
+
+                return trigger;
+            }
+
+        public static WebhookTrigger Create<TRequest, TRules>(string name, TRules rules) 
+            where TRequest : IRequest where TRules : IRules
+            {
+                var trigger = new WebhookTrigger(name);
+                trigger.SetRules(rules);
+                trigger.SetType<TRequest>();
+
+                return trigger;
+            }
 
         public void SetName(string name)
         {
@@ -64,13 +84,13 @@ namespace Medium.Domain
                 return;
             }
             Rules = rules;
-            Type = rules.GetType().Name.ToLowerInvariant().Replace("rules", string.Empty);
+            Provider = rules.Provider;
         }
 
         public void ClearRules()
         {
             Rules = null;
-            Type = null;
+            Provider = null;
         }
 
         public void AddRequester(string host)
@@ -111,6 +131,11 @@ namespace Medium.Domain
         public void Disable()
         {
             Enabled = false;
+        }
+
+        private void SetType<TRequest>()
+        {
+            Type = typeof(TRequest).Name.ToLowerInvariant().Replace("request", string.Empty);
         }
     }
 }

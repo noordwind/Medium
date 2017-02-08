@@ -2,8 +2,9 @@ using Medium.Domain;
 
 namespace Medium.Integrations.MyGet
 {
-    public class MyGetRules : IRules
+    public class MyGetPackageAddedRules : IRules
     {
+        public string Provider { get; set; } = "myget";
         public Rule Branch { get; set; } 
         public Rule Tag { get; set; } 
         public Rule Version { get; set; }

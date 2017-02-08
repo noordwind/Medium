@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Medium.Repositories;
+using Medium.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +34,18 @@ namespace Medium.Api
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IWebhookService, WebhookService>();
+            var repository = new InMemoryWebhookRepository();
+            var provider = new SampleWebhooksProvider();
+            var tasks = new List<Task>();
+            foreach(var webhook in provider.GetAll())
+            {
+                tasks.Add(repository.AddAsync(webhook));
+            }
+            Task.WaitAll(tasks.ToArray());
+            // services.AddTransient<IWebhookRepository, InMemoryWebhookRepository>();
+            // services.AddTransient<ISampleWebhooksProvider, SampleWebhooksProvider>();
+            services.AddTransient<IWebhookRepository>(x => repository);
             services.AddMvc();
         }
 

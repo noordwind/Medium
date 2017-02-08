@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Medium.Domain;
+using Medium.Integrations.MyGet;
+using Medium.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Medium.Api.Controllers
@@ -9,11 +12,18 @@ namespace Medium.Api.Controllers
     [Route("api/[controller]")]
     public class WebhooksController : Controller
     {
+        private readonly IWebhookService _webhookService;
+
+        public WebhooksController(IWebhookService webhookService)
+        {
+            _webhookService = webhookService;
+        }
+
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IEnumerable<Webhook>> Get()
         {
-            return new string[] {"value1", "value2"};
+            return await _webhookService.GetAllAsync();
         }
 
         // GET api/values/5
@@ -25,8 +35,14 @@ namespace Medium.Api.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody]object request)
         {
+        }
+
+        [HttpPost("{endpoint}")]
+        public async Task Post(string endpoint, string trigger, [FromBody]object request, string token)
+        {
+            await _webhookService.ExecuteAsync(endpoint, trigger, request, token);
         }
 
         // PUT api/values/5
