@@ -50,8 +50,6 @@ namespace Medium.Api
                 tasks.Add(repository.AddAsync(webhook));
             }
             Task.WaitAll(tasks.ToArray());
-            // services.AddTransient<IWebhookRepository, InMemoryWebhookRepository>();
-            // services.AddTransient<ISampleWebhooksProvider, SampleWebhooksProvider>();
             services.AddTransient<IWebhookRepository>(x => repository);
             services.AddMvc();
         }
