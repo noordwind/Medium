@@ -40,6 +40,7 @@ namespace Medium.Api
                 new MyGetPackageAddedValidator().Validate((MyGetPackageAddedRequest)request, (MyGetPackageAddedRules)rules));
 
             services.AddTransient<IWebhookService, WebhookService>();
+            services.AddSingleton<IHttpClient, CustomHttpClient>();
             services.AddSingleton<IWebhookTriggerValidatorResolver>(validatorResolver);
             var repository = new InMemoryWebhookRepository();
             var provider = new SampleWebhooksProvider();

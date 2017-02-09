@@ -14,11 +14,15 @@ namespace Medium.Services
     {
         private readonly IWebhookRepository _webhookRepository;
         private readonly IWebhookTriggerValidatorResolver _validatorResolver;
+        private readonly IHttpClient _httpClient;
 
-        public WebhookService(IWebhookRepository webhookRepository, IWebhookTriggerValidatorResolver validatorResolver)
+        public WebhookService(IWebhookRepository webhookRepository, 
+            IWebhookTriggerValidatorResolver validatorResolver,
+            IHttpClient httpClient)
         {
             _webhookRepository = webhookRepository;
             _validatorResolver = validatorResolver;
+            _httpClient = httpClient;
         }
 
         public async Task<IEnumerable<Webhook>> GetAllAsync() 
@@ -70,9 +74,13 @@ namespace Medium.Services
 
         private async Task ExecuteActionsAsync(Webhook webhook)
         {
+            var tasks = new List<Task>();
             foreach(var action in webhook.Actions)
             {
+                var task = _httpClient.PostAsync(action.Url, action.RequestBody);
+                tasks.Add(task);
             }
+            await Task.WhenAll(tasks);
         }
     }
 }

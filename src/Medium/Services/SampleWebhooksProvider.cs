@@ -10,20 +10,12 @@ namespace Medium.Services
         {
             yield return CreateWebhook("myget-feed-package-added", "myget", 
                                        "build-services-via-travis", "http://travis-ci.com",
-                                       new  
-                                       {
-                                            branch = "develop",
-                                            token = "secret"
-                                       },
+                                       new {source_type = "Branch", source_name = "develop" },
                                        new MyGetPackageAddedRules());
 
             yield return CreateWebhook("myget-dev-feed-package-added", "myget", 
                                        "build-dev-services-via-travis", "http://travis-ci.com",
-                                       new  
-                                       {
-                                            branch = "master",
-                                            token = "secret"
-                                       },
+                                       new {source_type = "Branch", source_name = "master" },
                                        new MyGetPackageAddedRules());
         }
 
@@ -38,7 +30,6 @@ namespace Medium.Services
             var action = new WebhookAction(actionName, actionUrl, actionRequest);
             action.Headers["content-type"] = "application/json";
             action.Headers["accept"] = "application/json";
-            action.SetRequestBody(new {source_type = "branch", source_name = "master" });
             webhook.AddAction(action);
 
             return webhook;
