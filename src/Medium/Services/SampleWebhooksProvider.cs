@@ -34,7 +34,11 @@ namespace Medium.Services
             var webhook = new Webhook(name);
             var trigger = WebhookTrigger.Create<MyGetPackageAddedRequest, TRules>(triggerName, rules);
             webhook.AddTrigger(trigger);
+
             var action = new WebhookAction(actionName, actionUrl, actionRequest);
+            action.Headers["content-type"] = "application/json";
+            action.Headers["accept"] = "application/json";
+            action.SetRequestBody(new {source_type = "branch", source_name = "master" });
             webhook.AddAction(action);
 
             return webhook;

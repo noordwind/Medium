@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Medium.Integrations.MyGet;
 using Medium.Repositories;
 using Medium.Services;
 using Microsoft.AspNetCore.Builder;
@@ -34,7 +35,12 @@ namespace Medium.Api
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
+            var validatorResolver = new WebhookTriggerValidatorResolver();
+            validatorResolver.Register<MyGetPackageAddedRequest>((request,rules)  => 
+                new MyGetPackageAddedValidator().Validate((MyGetPackageAddedRequest)request, (MyGetPackageAddedRules)rules));
+
             services.AddTransient<IWebhookService, WebhookService>();
+            services.AddSingleton<IWebhookTriggerValidatorResolver>(validatorResolver);
             var repository = new InMemoryWebhookRepository();
             var provider = new SampleWebhooksProvider();
             var tasks = new List<Task>();

@@ -12,7 +12,7 @@ namespace Medium.Domain
         public string Name { get; protected set; }
         public string Provider { get; protected set; }
         public string Type { get; protected set; }
-        public object Rules { get; protected set; }
+        public IRules Rules { get; protected set; }
         public bool Enabled { get; protected set; }
 
         public IEnumerable<string> Requesters 

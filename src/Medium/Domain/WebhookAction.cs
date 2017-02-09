@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace Medium.Domain
@@ -9,6 +10,7 @@ namespace Medium.Domain
         public string Name { get; protected set; }
         public string Url { get; protected set; }
         public object RequestBody { get; protected set; }
+        public IDictionary<string, object> Headers  { get; protected set; } = new Dictionary<string, object>();
         public bool Enabled { get; protected set; }
 
         protected WebhookAction()
