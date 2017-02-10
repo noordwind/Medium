@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Medium.Integrations.MyGet;
+using Medium.Integrations.AspNetCore;
+using Medium.Providers.MyGet;
 using Medium.Repositories;
 using Medium.Services;
 using Microsoft.AspNetCore.Builder;
@@ -18,7 +19,7 @@ namespace Medium.Api
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
+                .SetBasePath(env.ContentRootPath + "/Medium.Api")
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
@@ -35,22 +36,10 @@ namespace Medium.Api
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
-            var validatorResolver = new WebhookTriggerValidatorResolver();
-            validatorResolver.Register<MyGetPackageAddedRequest>((request,rules)  => 
-                new MyGetPackageAddedValidator().Validate((MyGetPackageAddedRequest)request, (MyGetPackageAddedRules)rules));
+            services.AddMedium()
+                    .AddMyGetProvider()
+                    .AddInMemoryRepository();
 
-            services.AddTransient<IWebhookService, WebhookService>();
-            services.AddSingleton<IHttpClient, CustomHttpClient>();
-            services.AddSingleton<IWebhookTriggerValidatorResolver>(validatorResolver);
-            var repository = new InMemoryWebhookRepository();
-            var provider = new SampleWebhooksProvider();
-            var tasks = new List<Task>();
-            foreach(var webhook in provider.GetAll())
-            {
-                tasks.Add(repository.AddAsync(webhook));
-            }
-            Task.WaitAll(tasks.ToArray());
-            services.AddTransient<IWebhookRepository>(x => repository);
             services.AddMvc();
         }
 
@@ -59,6 +48,7 @@ namespace Medium.Api
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            app.UseMedium(Configuration.GetSection("Medium"));
             app.UseMvc();
         }
     }

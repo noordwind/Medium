@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Medium.Domain;
-using Medium.Integrations.MyGet;
 using Medium.Repositories;
 using Newtonsoft.Json;
 
@@ -77,7 +76,7 @@ namespace Medium.Services
             var tasks = new List<Task>();
             foreach(var action in webhook.Actions)
             {
-                var task = _httpClient.PostAsync(action.Url, action.RequestBody);
+                var task = _httpClient.PostAsync(action.Url, action.Request);
                 tasks.Add(task);
             }
             await Task.WhenAll(tasks);

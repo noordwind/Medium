@@ -75,12 +75,17 @@ namespace Medium.Domain
 
         public void CreateToken()
         {
-            Token = Guid.NewGuid().ToString();
+            SetToken(Guid.NewGuid().ToString("N"));
         }
 
         public void ClearToken()
         {
-            Token = null;
+            SetToken(null);
+        }
+
+        public void SetToken(string token)
+        {
+            Token = token;
         }
 
         public void AddAction(WebhookAction action)

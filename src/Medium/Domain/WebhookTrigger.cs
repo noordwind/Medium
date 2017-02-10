@@ -28,11 +28,19 @@ namespace Medium.Domain
         {
         }
 
-        protected WebhookTrigger(string name)
+        protected WebhookTrigger(string name, string type = null)
         {
             SetName(name);
+            Type = type;
             Enable();
         }
+
+        public static WebhookTrigger Create(string name, string type) 
+            {
+                var trigger = new WebhookTrigger(name, type);
+
+                return trigger;
+            }
 
         public static WebhookTrigger Create<TRequest>(string name) 
             where TRequest : IRequest

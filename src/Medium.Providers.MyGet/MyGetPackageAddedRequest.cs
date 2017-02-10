@@ -1,7 +1,7 @@
 using System;
 using Medium.Domain;
 
-namespace Medium.Integrations.MyGet
+namespace Medium.Providers.MyGet
 {
     public class MyGetPackageAddedRequest : IRequest
     {

@@ -1,7 +1,7 @@
 ﻿{
-  "name": "Medium.Persistence.Mongo",
+  "name": "Medium.Providers.MyGet",
   "authors": [ "Noordwind" ],
-  "title": "Medium.Persistence.Mongo",
+  "title": "Medium.Providers.MyGet",
   "version": "1.0.0-*",
   "packOptions": {
     "licenseUrl": "https://github.com/noordwind/Medium/blob/master/LICENSE",
@@ -9,8 +9,7 @@
     "packageType": "DotnetCliTool"
   },
   "dependencies": {
-    "Medium": "1.0.*",
-    "MongoDB.Driver": "2.4.2"
+    "Medium": "1.0.*"
   },
   "frameworks": {
     "netstandard1.6": {

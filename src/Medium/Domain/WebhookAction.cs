@@ -9,7 +9,7 @@ namespace Medium.Domain
         private static readonly Regex NameRegex = new Regex("([a-zA-Z1-9 _\\-])\\w+", RegexOptions.Compiled);
         public string Name { get; protected set; }
         public string Url { get; protected set; }
-        public object RequestBody { get; protected set; }
+        public object Request { get; protected set; }
         public IDictionary<string, object> Headers  { get; protected set; } = new Dictionary<string, object>();
         public bool Enabled { get; protected set; }
 
@@ -17,11 +17,11 @@ namespace Medium.Domain
         {
         }
 
-        public WebhookAction(string name, string url, object requestBody = null)
+        public WebhookAction(string name, string url, object request = null)
         {
             SetName(name);
             SetUrl(url);
-            SetRequestBody(requestBody);
+            SetRequest(request);
             Enable();
         }
 
@@ -53,14 +53,14 @@ namespace Medium.Domain
             Url = url;
         }
 
-        public void SetRequestBody(object requestBody)
+        public void ClearRequest()
         {
-            RequestBody = requestBody;
+            SetRequest(null);
         }
 
-        public void ClearRequestBody()
+        public void SetRequest(object requestBody)
         {
-            RequestBody = null;
+            Request = requestBody;
         }
 
         public void Enable()

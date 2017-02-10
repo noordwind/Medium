@@ -1,7 +1,7 @@
 ﻿{
-  "name": "Medium.Persistence.Mongo",
+  "name": "Medium.Integrations.AspNetCore",
   "authors": [ "Noordwind" ],
-  "title": "Medium.Persistence.Mongo",
+  "title": "Medium.Integrations.AspNetCore",
   "version": "1.0.0-*",
   "packOptions": {
     "licenseUrl": "https://github.com/noordwind/Medium/blob/master/LICENSE",
@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "Medium": "1.0.*",
-    "MongoDB.Driver": "2.4.2"
+    "Microsoft.AspNetCore.Mvc": "1.1.0",
+    "Microsoft.Extensions.Configuration.Binder": "1.1.0",
+    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.1.0",
+    "Microsoft.Extensions.Configuration.FileExtensions": "1.1.0",
+    "Microsoft.Extensions.Configuration.Json": "1.1.0"    
   },
   "frameworks": {
     "netstandard1.6": {
