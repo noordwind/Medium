@@ -6,7 +6,7 @@ namespace Medium.Providers.MyGet
     {
         public void Register(IWebhookTriggerValidatorResolver resolver)
         {
-            resolver.Register<MyGetPackageAddedRequest>((request,rules)  => 
+            resolver.Register<MyGetPackageAddedRequest,MyGetPackageAddedRules>((request,rules)  => 
                 new MyGetPackageAddedValidator().Validate((MyGetPackageAddedRequest)request, (MyGetPackageAddedRules)rules));
         }
     }

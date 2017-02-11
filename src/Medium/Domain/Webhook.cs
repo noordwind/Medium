@@ -39,10 +39,14 @@ namespace Medium.Domain
         {
         }
 
-        public Webhook(string name, bool createToken = true)
+        public Webhook(string name, string endpoint = null, bool createToken = true)
         {
             Id = Guid.NewGuid();
             SetName(name);
+            if(!string.IsNullOrWhiteSpace(endpoint))
+            {
+                Endpoint = endpoint;
+            }
             if(createToken)
             {
                 CreateToken();

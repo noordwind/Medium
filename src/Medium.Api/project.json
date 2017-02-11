@@ -54,7 +54,8 @@
     "include": [
       "web.config",
       "nlog.config",
-      "appsettings.json"
+      "appsettings.json",
+      "medium.json"
     ]
   },
   "scripts": {

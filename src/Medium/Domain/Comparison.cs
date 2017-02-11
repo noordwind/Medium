@@ -3,7 +3,7 @@ namespace Medium.Domain
     public enum Comparison
     {
         None = 0,
-        Equal = 1,
+        Equals = 1,
         NotEqual = 2,
         StartsWith = 3,
         Contains = 4,

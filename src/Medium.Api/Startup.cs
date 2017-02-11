@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Medium.Integrations.AspNetCore;
+using Medium.Integrations.AspNetCore.Configuration;
 using Medium.Providers.MyGet;
 using Medium.Repositories;
 using Medium.Services;
@@ -11,6 +13,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 namespace Medium.Api
 {
@@ -35,14 +40,26 @@ namespace Medium.Api
                     .AddMyGetProvider()
                     .AddInMemoryRepository();
 
-            services.AddMvc();
+            services.AddMvc()
+                    .AddJsonOptions(x => 
+                    {
+                        x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                        x.SerializerSettings.DateFormatString = "yyyy-MM-ddTHH:mm:ss.fffZ";
+                        x.SerializerSettings.Formatting = Formatting.Indented;
+                        x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                        x.SerializerSettings.Converters.Add(new StringEnumConverter
+                        {
+                            AllowIntegerValues = true,
+                            CamelCaseText = true
+                        });
+                    });;
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            app.UseMedium(Configuration.GetSection("Medium"));
+            app.UseMedium();
             app.UseMvc();
         }
     }

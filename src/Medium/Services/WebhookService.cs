@@ -62,9 +62,12 @@ namespace Medium.Services
             }
 
             var requestType = _validatorResolver.GetRequestType(trigger.Type);
+            var rulesType = _validatorResolver.GetRulesType(trigger.Type);
             var serializedRequest = JsonConvert.SerializeObject(request);
             var deserializedRequest = JsonConvert.DeserializeObject(serializedRequest, requestType) as IRequest;
-            var isTriggerValid = _validatorResolver.Validate(trigger.Type, deserializedRequest, trigger.Rules);
+            var serializedRules = JsonConvert.SerializeObject(trigger.Rules);
+            var deserializedRules = JsonConvert.DeserializeObject(serializedRules, rulesType);
+            var isTriggerValid = _validatorResolver.Validate(trigger.Type, deserializedRequest, deserializedRules);
             if(!isTriggerValid)
             {
                 throw new InvalidOperationException($"Trigger '{trigger}' is not valid for webhook '{webhook.Name}'.");

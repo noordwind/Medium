@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,8 +7,8 @@ using Medium.Domain;
 using Medium.Integrations.AspNetCore.Configuration;
 using Medium.Services;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace Medium.Integrations.AspNetCore
 {
@@ -26,15 +27,18 @@ namespace Medium.Integrations.AspNetCore
         }
 
         public static IApplicationBuilder UseMedium(this IApplicationBuilder app)
-        {
-            return app;
-        }
+            => app.UseMedium("medium.json");
 
-        public static IApplicationBuilder UseMedium(this IApplicationBuilder app, IConfiguration configuration)
+        public static IApplicationBuilder UseMedium(this IApplicationBuilder app, string configurationFilePath)
+            => app.UseMedium(x => x.SettingsLoader = new MediumFileSettingsLoader(configurationFilePath));
+
+        public static IApplicationBuilder UseMedium(this IApplicationBuilder app, Action<MediumOptions> options)
         {
             var configurator = app.ApplicationServices.GetService<IMediumConfigurator>();
-            var settings = new Integrations.AspNetCore.Configuration.Medium();
-            configuration.Bind(settings);
+            var mediumOptions = new MediumOptions();
+            options(mediumOptions);
+            var configuration = mediumOptions.SettingsLoader.Load();
+            var settings = JsonConvert.DeserializeObject<MediumSettings>(configuration);
             var webhooks = settings.Webhooks.Select(x => MapWebhook(x));
             foreach(var webhook in webhooks)
             {
@@ -42,6 +46,11 @@ namespace Medium.Integrations.AspNetCore
             }
 
             var mediumConfiguration = configurator.Configure();
+            if(!mediumConfiguration.Webhooks.Any())
+            {
+                return app;
+            }
+
             var repository = mediumConfiguration.Repository;
             var tasks = new List<Task>();
             foreach(var webhook in mediumConfiguration.Webhooks)
@@ -55,7 +64,7 @@ namespace Medium.Integrations.AspNetCore
 
         private static Webhook MapWebhook(WebhookModel model)
         {
-            var webhook = new Webhook(model.Name);
+            var webhook = new Webhook(model.Name, model.Endpoint);
             if(!string.IsNullOrWhiteSpace(model.Token))
             {
                 webhook.SetToken(model.Token);
@@ -75,6 +84,10 @@ namespace Medium.Integrations.AspNetCore
         private static WebhookAction MapWebhookAction(WebhookActionModel model)
         {
             var action = new WebhookAction(model.Name, model.Url, model.Request);
+            foreach (var header in model.Headers)
+            {
+                action.Headers[header.Key] = header.Value;
+            }
 
             return action;
         }
@@ -82,6 +95,7 @@ namespace Medium.Integrations.AspNetCore
         private static WebhookTrigger MapWebhookTrigger(WebhookTriggerModel model)
         {
             var trigger = WebhookTrigger.Create(model.Name, model.Type);
+            trigger.SetRules(model.Rules);
 
             return trigger;
         }

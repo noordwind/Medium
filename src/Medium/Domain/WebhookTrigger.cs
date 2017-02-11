@@ -10,9 +10,8 @@ namespace Medium.Domain
         private static readonly Regex NameRegex = new Regex("([a-zA-Z1-9 _\\-])\\w+", RegexOptions.Compiled);
         private ISet<string> _requesters = new HashSet<string>();  
         public string Name { get; protected set; }
-        public string Provider { get; protected set; }
         public string Type { get; protected set; }
-        public IRules Rules { get; protected set; }
+        public object Rules { get; protected set; }
         public bool Enabled { get; protected set; }
 
         public IEnumerable<string> Requesters 
@@ -52,7 +51,7 @@ namespace Medium.Domain
             }
 
         public static WebhookTrigger Create<TRequest, TRules>(string name, TRules rules) 
-            where TRequest : IRequest where TRules : IRules
+            where TRequest : IRequest where TRules : class
             {
                 var trigger = new WebhookTrigger(name);
                 trigger.SetRules(rules);
@@ -80,10 +79,10 @@ namespace Medium.Domain
                 throw new ArgumentException("Webhook trigger name doesn't match the required criteria.", nameof(name));
             }
 
-            Name = name.Trim().ToLowerInvariant();
+            Name = name.Trim().Replace(" ", "-").ToLowerInvariant();
         }
 
-        public void SetRules<T>(T rules) where T : IRules
+        public void SetRules<T>(T rules) where T : class
         {
             if(rules == null)
             {
@@ -92,13 +91,11 @@ namespace Medium.Domain
                 return;
             }
             Rules = rules;
-            Provider = rules.Provider;
         }
 
         public void ClearRules()
         {
             Rules = null;
-            Provider = null;
         }
 
         public void AddRequester(string host)

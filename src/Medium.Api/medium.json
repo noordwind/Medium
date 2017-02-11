@@ -1,0 +1,35 @@
+﻿{
+  "webhooks": [
+    {
+      "name": "MyGet package added",
+      "enabled": true,
+      "endpoint": "run-docker-hub",
+      "token": "secret",
+      "actions": [
+        {
+          "name": "Trigger Dockher Hub build",
+          "url": "https://hub.docker.com",
+          "headers": {"content-type": "application/json"},
+          "request": {
+            "source_type": "Branch",
+            "source_name": "master"
+          }
+        }
+      ],
+      "triggers": [
+        {
+          "name": "Package added",
+          "enabled": true,
+          "provider": "myget",
+          "type": "mygetpackageadded",
+          "rules": {
+            "branch": {
+              "value": "master",
+              "comparison": "equals"
+            }
+          }
+      }]
+    }
+  ]
+}
+
