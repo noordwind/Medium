@@ -1,4 +1,3 @@
-using System;
 using Medium.Domain;
 
 namespace Medium.Providers.MyGet
@@ -7,7 +6,30 @@ namespace Medium.Providers.MyGet
     {
         public bool Validate(MyGetPackageAddedRequest request, MyGetPackageAddedRules rules)
         {
-            return true;
+            if(rules == null)
+            {
+                return true;
+            }
+
+            return ValidatePackageIdentifier(rules, request.Payload.PackageIdentifier);
+        }
+
+        private bool ValidatePackageIdentifier(MyGetPackageAddedRules rules, string identifier)
+        {
+            if(string.IsNullOrWhiteSpace(identifier))
+            {
+                return true;
+            }
+            if(rules.PackageIdentifier == null)
+            {
+                return true;
+            }
+            if(rules.PackageIdentifier.Comparison == Comparison.Equals)
+            {
+                return rules.PackageIdentifier.Value == identifier;
+            }
+
+            return false;
         }
     }
 }

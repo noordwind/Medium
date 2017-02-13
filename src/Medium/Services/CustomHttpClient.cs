@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -8,21 +8,25 @@ namespace Medium.Services
 {
     public class CustomHttpClient : IHttpClient
     {
-        private readonly HttpClient _httpClient;
-
-        public CustomHttpClient()
+        public async Task<HttpResponseMessage> PostAsync(string url, object data,
+            IDictionary<string, object> headers = null)
         {
-            _httpClient  = new HttpClient();
-            _httpClient.DefaultRequestHeaders
-                .Accept
-                .Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        }
-        public async Task<HttpResponseMessage> PostAsync(string url, object data)
-        {
-            var payload = GetJsonContent(data);
-            var response = await _httpClient.PostAsync(url, payload);
+            using(var httpClient = new HttpClient())
+            {
+                foreach(var header in httpClient.DefaultRequestHeaders)
+                {
+                    httpClient.DefaultRequestHeaders.Remove(header.Key);
+                }
+                foreach(var header in headers ?? new Dictionary<string, object>())
+                {
+                    httpClient.DefaultRequestHeaders.TryAddWithoutValidation(header.Key, new List<string>{header.Value.ToString()});
+                }
 
-            return response;
+                var payload = GetJsonContent(data);
+                var response = await httpClient.PostAsync(url, payload);
+
+                return response;
+            }
         }
 
         private static StringContent GetJsonContent(object data)

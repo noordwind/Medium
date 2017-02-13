@@ -5,6 +5,7 @@ namespace Medium.Integrations.AspNetCore.Configuration
     public class WebhookActionModel
     {
         public string Name { get; set; }
+        public string Codename { get; set; }
         public bool Enabled { get; set; }        
         public string Url { get; set; }
         public object Request { get; set; }

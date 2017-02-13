@@ -30,8 +30,8 @@ namespace Medium.Services
         public async Task ExecuteAsync(string endpoint, string trigger, object request, string token = null)
         {
             var webhook = await GetAndValidateWebhookAsync(endpoint, token);
-            ValidateTrigger(webhook, trigger, request);
-            await ExecuteActionsAsync(webhook);
+            var webhookTrigger = GetAndValidateTrigger(webhook, trigger, request);
+            await ExecuteActionsAsync(webhookTrigger, webhook);
         }
 
         private async Task<Webhook> GetAndValidateWebhookAsync(string endpoint, string token = null)
@@ -53,7 +53,7 @@ namespace Medium.Services
             return webhook;
         }
 
-        private void ValidateTrigger(Webhook webhook, string triggerName, object request)
+        private WebhookTrigger GetAndValidateTrigger(Webhook webhook, string triggerName, object request)
         {
             var trigger = webhook.Triggers.SingleOrDefault(x => x.Name == triggerName.ToLowerInvariant());
             if(trigger == null)
@@ -72,14 +72,39 @@ namespace Medium.Services
             {
                 throw new InvalidOperationException($"Trigger '{trigger}' is not valid for webhook '{webhook.Name}'.");
             }
+
+            return trigger;
         }
 
-        private async Task ExecuteActionsAsync(Webhook webhook)
+        private async Task ExecuteActionsAsync(WebhookTrigger trigger, Webhook webhook)
+        {
+            if(trigger.Actions.Any(x => x == "*"))
+            {
+                await ExecuteAllActionsAsync(webhook);
+
+                return;
+            }
+
+            var tasks = new List<Task>();
+            foreach(var codename in trigger.Actions)
+            {
+                var action = webhook.Actions.Single(x => x.Codename == codename);
+                if(!action.Enabled)
+                {
+                    continue;
+                }
+                var task = _httpClient.PostAsync(action.Url, action.Request, action.Headers);
+                tasks.Add(task);
+            }
+            await Task.WhenAll(tasks);
+        }
+
+        private async Task ExecuteAllActionsAsync(Webhook webhook)
         {
             var tasks = new List<Task>();
             foreach(var action in webhook.Actions)
             {
-                var task = _httpClient.PostAsync(action.Url, action.Request);
+                var task = _httpClient.PostAsync(action.Url, action.Request, action.Headers);
                 tasks.Add(task);
             }
             await Task.WhenAll(tasks);

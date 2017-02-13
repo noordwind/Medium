@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Medium.Domain;
 
 namespace Medium.Integrations.AspNetCore.Configuration
 {
@@ -9,6 +8,7 @@ namespace Medium.Integrations.AspNetCore.Configuration
         public bool Enabled { get; set; }   
         public string Type { get; set; }
         public object Rules { get; set; }
+        public IEnumerable<string> Actions { get; set; }
         public IEnumerable<string> Requesters { get; set; }
     }
 }

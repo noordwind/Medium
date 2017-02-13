@@ -3,17 +3,34 @@
     {
       "name": "MyGet package added",
       "enabled": true,
-      "endpoint": "run-docker-hub",
+      "endpoint": "run-travis-ci-builds",
       "token": "secret",
       "actions": [
         {
-          "name": "Trigger Dockher Hub build",
-          "url": "https://hub.docker.com",
-          "headers": {"content-type": "application/json"},
-          "request": {
-            "source_type": "Branch",
-            "source_name": "master"
-          }
+          "name": "Build Coolector.Api [develop]",
+          "codename": "build-coolector.api-develop",
+          "enabled": true,
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Api/requests",
+          "headers": {
+            "Content-Type": "application/json",
+            "Acccept": "application/json",
+            "Travis-API-Version": "3",
+            "Authorization": "token secret"
+          },
+          "request": { "branch": "develop" }
+        },
+        {
+          "name": "Build Coolector.Services.Storage [develop]",
+          "codename": "build-coolector.service.storage-develop",
+          "enabled": true,
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.Storage/requests",
+          "headers": {
+            "Content-Type": "application/json",
+            "Acccept": "application/json",
+            "Travis-API-Version": "3",
+            "Authorization": "token secret"
+          },
+          "request": { "branch": "develop" }
         }
       ],
       "triggers": [
@@ -22,9 +39,10 @@
           "enabled": true,
           "provider": "myget",
           "type": "mygetpackageadded",
+          "actions": ["*"],
           "rules": {
-            "branch": {
-              "value": "master",
+            "packageIdentifier": {
+              "value": "Coolector.Services.Users.Shared",
               "comparison": "equals"
             }
           }
@@ -32,4 +50,3 @@
     }
   ]
 }
-

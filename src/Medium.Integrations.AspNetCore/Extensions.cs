@@ -65,6 +65,10 @@ namespace Medium.Integrations.AspNetCore
         private static Webhook MapWebhook(WebhookModel model)
         {
             var webhook = new Webhook(model.Name, model.Endpoint);
+            if(!model.Enabled)
+            {
+                webhook.Disable();
+            }
             if(!string.IsNullOrWhiteSpace(model.Token))
             {
                 webhook.SetToken(model.Token);
@@ -84,7 +88,12 @@ namespace Medium.Integrations.AspNetCore
         private static WebhookAction MapWebhookAction(WebhookActionModel model)
         {
             var action = new WebhookAction(model.Name, model.Url, model.Request);
-            foreach (var header in model.Headers)
+            action.SetCodename(model.Codename);
+            if(!model.Enabled)
+            {
+                action.Disable();
+            }
+            foreach (var header in model.Headers ?? new Dictionary<string, object>())
             {
                 action.Headers[header.Key] = header.Value;
             }
@@ -96,6 +105,18 @@ namespace Medium.Integrations.AspNetCore
         {
             var trigger = WebhookTrigger.Create(model.Name, model.Type);
             trigger.SetRules(model.Rules);
+            if(!model.Enabled)
+            {
+                trigger.Disable();
+            }
+            foreach (var action in model.Actions ?? Enumerable.Empty<string>())
+            {
+                trigger.AddAction(action);
+            }
+            foreach (var requester in model.Requesters ?? Enumerable.Empty<string>())
+            {
+                trigger.AddRequester(requester);
+            }
 
             return trigger;
         }

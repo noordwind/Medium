@@ -8,11 +8,21 @@ namespace Medium.Domain
     public class WebhookTrigger
     {
         private static readonly Regex NameRegex = new Regex("([a-zA-Z1-9 _\\-])\\w+", RegexOptions.Compiled);
+        private ISet<string> _actions = new HashSet<string>();  
         private ISet<string> _requesters = new HashSet<string>();  
         public string Name { get; protected set; }
         public string Type { get; protected set; }
         public object Rules { get; protected set; }
         public bool Enabled { get; protected set; }
+
+        public IEnumerable<string> Actions 
+        {
+            get { return _actions; }
+            set 
+            {
+                _actions = new HashSet<string>(value);
+            }
+        }
 
         public IEnumerable<string> Requesters 
         {
@@ -110,7 +120,7 @@ namespace Medium.Domain
             {
                 throw new ArgumentException($"Webhook trigger requester: '{host}' already exists.", nameof(host));
             }
-            _requesters.Add(requester);
+            _requesters.Add(host);
         }
 
         public void RemoveRequester(string host)
@@ -126,6 +136,38 @@ namespace Medium.Domain
                 return;
             }
             _requesters.Remove(requester);
+        }
+
+        public void AddAction(string action)
+        {
+            if(string.IsNullOrWhiteSpace(action))
+            {
+                throw new ArgumentException("Webhook trigger action can not be empty.", nameof(action));
+            }
+
+            var actionName = action.Trim().Replace(" ", "-").ToLowerInvariant();
+            var existingAction = _actions.SingleOrDefault(x => x.Equals(actionName));
+            if(existingAction != null)
+            {
+                throw new ArgumentException($"Webhook trigger action: '{action}' already exists.", nameof(action));
+            }
+            _actions.Add(actionName);
+        }
+
+        public void RemoveActions(string action)
+        {
+            if(string.IsNullOrWhiteSpace(action))
+            {
+                throw new ArgumentException("Webhook trigger action can not be empty.", nameof(action));
+            }
+
+            var actionName = action.Trim().Replace(" ", "-").ToLowerInvariant();
+            var existingAction = _actions.SingleOrDefault(x => x.Equals(actionName));
+            if(existingAction == null)
+            {
+                return;
+            }
+            _actions.Remove(existingAction);
         }
 
         public void Enable()

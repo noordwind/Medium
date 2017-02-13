@@ -13,6 +13,7 @@ namespace Medium.Providers.MyGet
         public class MyGetPayload
         {
             public string PackageType { get; set; }
+            public string PackageIdentifier { get; set; }
             public string PackageVersion { get; set; }
             public string FeedIdentifier { get; set; }
         }
