@@ -15,7 +15,9 @@ namespace Medium.Domain
         public string Name { get; protected set; }
         public string Endpoint { get; protected set; }
         public string Token { get; protected set; }
-        public bool Enabled { get; protected set; }
+        public bool Inactive { get; protected set; }
+        public object DefaultRequest { get; protected set; }
+        public IDictionary<string, object> DefaultHeaders  { get; protected set; } = new Dictionary<string, object>();
 
         public IEnumerable<WebhookAction> Actions 
         {
@@ -51,7 +53,7 @@ namespace Medium.Domain
             {
                 CreateToken();
             }
-            Enable();
+            Activate();
         }
 
         public void SetName(string name)
@@ -92,8 +94,25 @@ namespace Medium.Domain
             Token = token;
         }
 
-        public void AddAction(WebhookAction action)
+        public void AddAction(WebhookAction action, bool setDefaultsIfEmpty = true)
         {
+            if(!setDefaultsIfEmpty)
+            {
+                _actions.Add(action);
+
+                return;
+            }
+            if(action.Request == null)
+            {
+                action.SetRequest(DefaultRequest);
+            }
+            if(!action.Headers.Any())
+            {
+                foreach(var header in DefaultHeaders)
+                {
+                    action.Headers[header.Key] = header.Value;
+                }
+            }
             _actions.Add(action);
         }
 
@@ -132,14 +151,24 @@ namespace Medium.Domain
             _triggers.Remove(trigger);
         }
 
-        public void Enable()
+        public void ClearDefaultRequest()
         {
-            Enabled = true;
+            SetDefaultRequest(null);
         }
 
-        public void Disable()
+        public void SetDefaultRequest(object request)
         {
-            Enabled = false;
+            DefaultRequest = request;
+        }
+
+        public void Activate()
+        {
+            Inactive = false;
+        }
+
+        public void Deactivate()
+        {
+            Inactive = true;
         }
     }
 }

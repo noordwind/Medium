@@ -6,7 +6,7 @@ namespace Medium.Integrations.AspNetCore.Configuration
     {
         public string Name { get; set; }
         public string Codename { get; set; }
-        public bool Enabled { get; set; }        
+        public bool Inactive { get; set; }        
         public string Url { get; set; }
         public object Request { get; set; }
         public IDictionary<string, object> Headers  { get; set; }

@@ -41,9 +41,9 @@ namespace Medium.Services
             {
                 throw new ArgumentException($"Webhook was not found for endpoint: '{endpoint}'.");
             }
-            if(!webhook.Enabled)
+            if(webhook.Inactive)
             {
-                throw new ArgumentException($"Webhook '{webhook.Name}' is not enabled.");
+                throw new ArgumentException($"Webhook '{webhook.Name}' is inactive.");
             }
             if(!string.IsNullOrWhiteSpace(webhook.Token) && webhook.Token != token)
             {
@@ -58,7 +58,7 @@ namespace Medium.Services
             var trigger = webhook.Triggers.SingleOrDefault(x => x.Name == triggerName.ToLowerInvariant());
             if(trigger == null)
             {
-                throw new ArgumentException($"Trigger '{trigger}' was not found for webhook '{webhook.Name}'.");
+                throw new ArgumentException($"Trigger '{triggerName}' was not found for webhook '{webhook.Name}'.");
             }
 
             var requestType = _validatorResolver.GetRequestType(trigger.Type);
@@ -70,7 +70,7 @@ namespace Medium.Services
             var isTriggerValid = _validatorResolver.Validate(trigger.Type, deserializedRequest, deserializedRules);
             if(!isTriggerValid)
             {
-                throw new InvalidOperationException($"Trigger '{trigger}' is not valid for webhook '{webhook.Name}'.");
+                throw new InvalidOperationException($"Trigger '{trigger.Name}' is not valid for webhook '{webhook.Name}'.");
             }
 
             return trigger;
@@ -89,7 +89,7 @@ namespace Medium.Services
             foreach(var codename in trigger.Actions)
             {
                 var action = webhook.Actions.Single(x => x.Codename == codename);
-                if(!action.Enabled)
+                if(action.Inactive)
                 {
                     continue;
                 }

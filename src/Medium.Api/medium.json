@@ -1,52 +1,64 @@
 ﻿{
   "webhooks": [
     {
-      "name": "MyGet package added",
-      "enabled": true,
-      "endpoint": "run-travis-ci-builds",
+      "name": "MyGet package added to dev feed",
+      "endpoint": "myget-dev",
       "token": "secret",
+      "defaultHeaders": {
+        "Content-Type": "application/json",
+        "Acccept": "application/json",
+        "Travis-API-Version": "3",
+        "Authorization": "token secret"
+      },
+      "defaultRequest": { "branch": "develop" },
       "actions": [
         {
-          "name": "Build Coolector.Api [develop]",
-          "codename": "build-coolector.api-develop",
-          "enabled": true,
-          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Api/requests",
-          "headers": {
-            "Content-Type": "application/json",
-            "Acccept": "application/json",
-            "Travis-API-Version": "3",
-            "Authorization": "token secret"
-          },
-          "request": { "branch": "develop" }
+          "name": "Build API",
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Api/requests"
         },
         {
-          "name": "Build Coolector.Services.Storage [develop]",
-          "codename": "build-coolector.service.storage-develop",
-          "enabled": true,
-          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.Storage/requests",
-          "headers": {
-            "Content-Type": "application/json",
-            "Acccept": "application/json",
-            "Travis-API-Version": "3",
-            "Authorization": "token secret"
-          },
-          "request": { "branch": "develop" }
+          "name": "Build Storage Service",
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.Storage/requests"
+        },
+        {
+          "name": "Build Users Service",
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.Users/requests"
         }
       ],
       "triggers": [
         {
-          "name": "Package added",
-          "enabled": true,
+          "name": "User Service package added",
           "provider": "myget",
           "type": "mygetpackageadded",
-          "actions": ["*"],
+          "actions": ["Build API", "Build Storage Service"],
           "rules": {
             "packageIdentifier": {
               "value": "Coolector.Services.Users.Shared",
               "comparison": "equals"
+            },
+            "feedIdentifier": {
+              "value": "coolector-dev",
+              "comparison": "equals"
             }
           }
-      }]
+        },
+        {
+          "name": "Remark Service package added",
+          "provider": "myget",
+          "type": "mygetpackageadded",
+          "actions": ["Build API", "Build Users Service"],
+          "rules": {
+            "packageIdentifier": {
+              "value": "Coolector.Services.Remarks.Shared",
+              "comparison": "equals"
+            },
+            "feedIdentifier": {
+              "value": "coolector-dev",
+              "comparison": "equals"
+            }
+          }
+        }        
+      ]
     }
   ]
 }

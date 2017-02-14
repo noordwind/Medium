@@ -12,7 +12,7 @@ namespace Medium.Domain
         public string Url { get; protected set; }
         public object Request { get; protected set; }
         public IDictionary<string, object> Headers  { get; protected set; } = new Dictionary<string, object>();
-        public bool Enabled { get; protected set; }
+        public bool Inactive { get; protected set; }
 
         protected WebhookAction()
         {
@@ -24,7 +24,7 @@ namespace Medium.Domain
             SetCodename(name);
             SetUrl(url);
             SetRequest(request);
-            Enable();
+            Activate();
         }
 
         public void SetName(string name)
@@ -69,19 +69,19 @@ namespace Medium.Domain
             SetRequest(null);
         }
 
-        public void SetRequest(object requestBody)
+        public void SetRequest(object request)
         {
-            Request = requestBody;
+            Request = request;
         }
 
-        public void Enable()
+        public void Activate()
         {
-            Enabled = true;
+            Inactive = false;
         }
 
-        public void Disable()
+        public void Deactivate()
         {
-            Enabled = false;
+            Inactive = true;
         }
     }
 }

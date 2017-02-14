@@ -13,7 +13,7 @@ namespace Medium.Domain
         public string Name { get; protected set; }
         public string Type { get; protected set; }
         public object Rules { get; protected set; }
-        public bool Enabled { get; protected set; }
+        public bool Inactive { get; protected set; }
 
         public IEnumerable<string> Actions 
         {
@@ -41,7 +41,7 @@ namespace Medium.Domain
         {
             SetName(name);
             Type = type;
-            Enable();
+            Activate();
         }
 
         public static WebhookTrigger Create(string name, string type) 
@@ -170,14 +170,14 @@ namespace Medium.Domain
             _actions.Remove(existingAction);
         }
 
-        public void Enable()
+        public void Activate()
         {
-            Enabled = true;
+            Inactive = false;
         }
 
-        public void Disable()
+        public void Deactivate()
         {
-            Enabled = false;
+            Inactive = true;
         }
 
         private void SetType<TRequest>()
