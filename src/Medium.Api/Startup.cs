@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Medium.Integrations.AspNetCore;
 using Medium.Integrations.AspNetCore.Configuration;
+using Medium.Integrations.Lockbox;
 using Medium.Providers.MyGet;
 using Medium.Repositories;
 using Medium.Services;

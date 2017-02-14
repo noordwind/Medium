@@ -9,6 +9,7 @@
   "dependencies": {
     "Medium": "1.0.*",
     "Medium.Integrations.AspNetCore": "1.0.*",
+    "Medium.Integrations.Lockbox": "1.0.*",
     "Medium.Providers.MyGet": "1.0.*",
     "Autofac": "4.3.0",
     "Autofac.Extensions.DependencyInjection": "4.0.0",
