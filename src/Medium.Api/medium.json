@@ -1,6 +1,150 @@
 ﻿{
   "webhooks": [
     {
+      "name": "MyGet package added to feed",
+      "endpoint": "myget",
+      "token": "secret",
+      "defaultHeaders": {
+        "Content-Type": "application/json",
+        "Acccept": "application/json",
+        "Travis-API-Version": "3",
+        "Authorization": "token secret"
+      },
+      "defaultRequest": { "branch": "master" },
+      "actions": [
+        {
+          "name": "Build API",
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Api/requests"
+        },
+        {
+          "name": "Build Mailing Service",
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.Mailing/requests"
+        },
+        {
+          "name": "Build Operations Service",
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.Operations/requests"
+        },
+        {
+          "name": "Build Remarks Service",
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.Remarks/requests"
+        },
+        {
+          "name": "Build SignalR Service",
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.SignalR/requests"
+        },
+        {
+          "name": "Build Statistics Service",
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.Statistics/requests"
+        },
+        {
+          "name": "Build Storage Service",
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.Storage/requests"
+        },
+        {
+          "name": "Build Users Service",
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.Users/requests"
+        }
+      ],
+      "triggers": [
+        {
+          "name": "Common package added",
+          "provider": "myget",
+          "type": "mygetpackageadded",
+          "actions": ["*"],
+          "rules": {
+            "packageIdentifier": {
+              "value": "Coolector.Common",
+              "comparison": "equals"
+            },
+            "feedIdentifier": {
+              "value": "coolector",
+              "comparison": "equals"
+            }
+          }
+        },
+        {
+          "name": "Mailing Service package added",
+          "provider": "myget",
+          "type": "mygetpackageadded",
+          "actions": ["Build Users Service"],
+          "rules": {
+            "packageIdentifier": {
+              "value": "Coolector.Services.Mailing.Shared",
+              "comparison": "equals"
+            },
+            "feedIdentifier": {
+              "value": "coolector",
+              "comparison": "equals"
+            }
+          }
+        },
+        {
+          "name": "Operations Service package added",
+          "provider": "myget",
+          "type": "mygetpackageadded",
+          "actions": ["Build API", "Build SignalR Service", "Build Storage Service"],
+          "rules": {
+            "packageIdentifier": {
+              "value": "Coolector.Services.Operations.Shared",
+              "comparison": "equals"
+            },
+            "feedIdentifier": {
+              "value": "coolector",
+              "comparison": "equals"
+            }
+          }
+        },
+        {
+          "name": "Remarks Service package added",
+          "provider": "myget",
+          "type": "mygetpackageadded",
+          "actions": ["Build API", "Build Operations Service", "Build SignalR Service", "Build Statistics Service", "Build Storage Service"],
+          "rules": {
+            "packageIdentifier": {
+              "value": "Coolector.Services.Remarks.Shared",
+              "comparison": "equals"
+            },
+            "feedIdentifier": {
+              "value": "coolector",
+              "comparison": "equals"
+            }
+          }
+        },
+        {
+          "name": "Statistics Service package added",
+          "provider": "myget",
+          "type": "mygetpackageadded",
+          "actions": ["Build API", "Build Storage Service"],
+          "rules": {
+            "packageIdentifier": {
+              "value": "Coolector.Services.Statistics.Shared",
+              "comparison": "equals"
+            },
+            "feedIdentifier": {
+              "value": "coolector",
+              "comparison": "equals"
+            }
+          }
+        },           
+        {
+          "name": "Users Service package added",
+          "provider": "myget",
+          "type": "mygetpackageadded",
+          "actions": ["Build API", "Build Operations Service", "Build Remarks Service", "Build Statistics Service", "Build Storage Service"],
+          "rules": {
+            "packageIdentifier": {
+              "value": "Coolector.Services.Users.Shared",
+              "comparison": "equals"
+            },
+            "feedIdentifier": {
+              "value": "coolector",
+              "comparison": "equals"
+            }
+          }
+        }      
+      ]
+    },
+    {
       "name": "MyGet package added to dev feed",
       "endpoint": "myget-dev",
       "token": "secret",
@@ -17,6 +161,26 @@
           "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Api/requests"
         },
         {
+          "name": "Build Mailing Service",
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.Mailing/requests"
+        },
+        {
+          "name": "Build Operations Service",
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.Operations/requests"
+        },
+        {
+          "name": "Build Remarks Service",
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.Remarks/requests"
+        },
+        {
+          "name": "Build SignalR Service",
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.SignalR/requests"
+        },
+        {
+          "name": "Build Statistics Service",
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.Statistics/requests"
+        },
+        {
           "name": "Build Storage Service",
           "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.Storage/requests"
         },
@@ -27,13 +191,13 @@
       ],
       "triggers": [
         {
-          "name": "User Service package added",
+          "name": "Common package added",
           "provider": "myget",
           "type": "mygetpackageadded",
-          "actions": ["Build API", "Build Storage Service"],
+          "actions": ["*"],
           "rules": {
             "packageIdentifier": {
-              "value": "Coolector.Services.Users.Shared",
+              "value": "Coolector.Common",
               "comparison": "equals"
             },
             "feedIdentifier": {
@@ -43,10 +207,42 @@
           }
         },
         {
-          "name": "Remark Service package added",
+          "name": "Mailing Service package added",
           "provider": "myget",
           "type": "mygetpackageadded",
-          "actions": ["Build API", "Build Users Service"],
+          "actions": ["Build Users Service"],
+          "rules": {
+            "packageIdentifier": {
+              "value": "Coolector.Services.Mailing.Shared",
+              "comparison": "equals"
+            },
+            "feedIdentifier": {
+              "value": "coolector-dev",
+              "comparison": "equals"
+            }
+          }
+        },
+        {
+          "name": "Operations Service package added",
+          "provider": "myget",
+          "type": "mygetpackageadded",
+          "actions": ["Build API", "Build SignalR Service", "Build Storage Service"],
+          "rules": {
+            "packageIdentifier": {
+              "value": "Coolector.Services.Operations.Shared",
+              "comparison": "equals"
+            },
+            "feedIdentifier": {
+              "value": "coolector-dev",
+              "comparison": "equals"
+            }
+          }
+        },
+        {
+          "name": "Remarks Service package added",
+          "provider": "myget",
+          "type": "mygetpackageadded",
+          "actions": ["Build API", "Build Operations Service", "Build SignalR Service", "Build Statistics Service", "Build Storage Service"],
           "rules": {
             "packageIdentifier": {
               "value": "Coolector.Services.Remarks.Shared",
@@ -57,7 +253,39 @@
               "comparison": "equals"
             }
           }
-        }        
+        },
+        {
+          "name": "Statistics Service package added",
+          "provider": "myget",
+          "type": "mygetpackageadded",
+          "actions": ["Build API", "Build Storage Service"],
+          "rules": {
+            "packageIdentifier": {
+              "value": "Coolector.Services.Statistics.Shared",
+              "comparison": "equals"
+            },
+            "feedIdentifier": {
+              "value": "coolector-dev",
+              "comparison": "equals"
+            }
+          }
+        },           
+        {
+          "name": "Users Service package added",
+          "provider": "myget",
+          "type": "mygetpackageadded",
+          "actions": ["Build API", "Build Operations Service", "Build Remarks Service", "Build Statistics Service", "Build Storage Service"],
+          "rules": {
+            "packageIdentifier": {
+              "value": "Coolector.Services.Users.Shared",
+              "comparison": "equals"
+            },
+            "feedIdentifier": {
+              "value": "coolector-dev",
+              "comparison": "equals"
+            }
+          }
+        }      
       ]
     }
   ]
