@@ -37,7 +37,9 @@ namespace Medium.Integrations.Lockbox
             _entryKey = GetParameterOrFail(_entryKey, EntryKeyEnvironmentVariable, "entry key");
 
             var lockboxClient = new LockboxEntryClient(_encryptionKey, _apiUrl, _apiKey);
-            var entry = lockboxClient.GetEntryAsync(_boxName, _entryKey).Result;
+            var task = lockboxClient.GetEntryAsync<MediumSettings>(_boxName, _entryKey);
+            task.Wait();
+            var entry = task.Result;
             if (entry == null)
             {
                 throw new ArgumentException($"Lockbox entry has not been found for key: '{_entryKey}'.", nameof(_entryKey));
