@@ -21,6 +21,11 @@ namespace Medium.Integrations.Lockbox
         public LockboxMediumSettingsLoader(string encryptionKey = null,  string apiUrl = null, 
             string apiKey = null, string boxName = null, string entryKey = null)
         {
+            _encryptionKey = encryptionKey;
+            _apiUrl = apiUrl;
+            _apiKey = apiKey;
+            _boxName = boxName;
+            _entryKey = entryKey;
         }
 
         public string Load()

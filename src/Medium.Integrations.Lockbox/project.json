@@ -2,7 +2,7 @@
   "name": "Medium.Integrations.Lockbox",
   "authors": [ "Noordwind" ],
   "title": "Medium.Integrations.Lockbox",
-  "version": "1.0.0-alpha-1",
+  "version": "1.0.0-alpha-2",
   "packOptions": {
     "licenseUrl": "https://github.com/noordwind/Medium/blob/master/LICENSE",
     "projectUrl": "https://github.com/noordwind/Medium",
