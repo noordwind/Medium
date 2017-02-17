@@ -26,7 +26,7 @@ namespace Medium.Tests.Specs.Domain
         It should_have_assigned_id = () => Webhook.Id.ShouldNotEqual(Guid.Empty);
         It should_have_assigned_name = () => Webhook.Name.ShouldEqual(Name.ToLowerInvariant());
         It should_have_assigned_endpoint = () => Webhook.Endpoint.ShouldEqual(Name.Replace(" ", "-").ToLowerInvariant());
-        It should_be_enabled = () => Webhook.Enabled.ShouldBeTrue();
+        It should_be_active = () => Webhook.Inactive.ShouldBeFalse();
         It should_not_have_any_actions = () => Webhook.Actions.ShouldBeEmpty();
         It should_not_have_any_triggers = () => Webhook.Triggers.ShouldBeEmpty();
     }
