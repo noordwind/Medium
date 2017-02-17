@@ -1,4 +1,5 @@
 using Medium.Configuration;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace Medium.Providers.MyGet
 {
@@ -10,5 +11,13 @@ namespace Medium.Providers.MyGet
 
             return configurator;
         }
+
+        public static FormatterCollection<IInputFormatter> AddMyGetFormatter(this FormatterCollection<IInputFormatter> formatters)
+        {
+            formatters.Add(new MyGetInputFormatter());
+
+            return formatters;
+        }
+        
     }
 }

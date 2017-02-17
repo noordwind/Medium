@@ -1,4 +1,4 @@
-namespace Medium.Integrations.AspNetCore.Configuration
+namespace Medium.Configuration
 {
     public interface IMediumSettingsLoader
     {

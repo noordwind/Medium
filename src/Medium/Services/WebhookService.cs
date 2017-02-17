@@ -28,10 +28,13 @@ namespace Medium.Services
             => await _webhookRepository.GetAllAsync();
 
         public async Task ExecuteAsync(string endpoint, string trigger, object request, string token = null)
+            => await ExecuteAsync(endpoint, trigger, JsonConvert.SerializeObject(request), token);
+
+        public async Task ExecuteAsync(string endpoint, string trigger, string serializedRequest, string token = null)
         {
             var webhook = await GetAndValidateWebhookAsync(endpoint, token);
-            var webhookTrigger = GetAndValidateTrigger(webhook, trigger, request);
-            await ExecuteActionsAsync(webhookTrigger, webhook);
+            var webhookTriggerAndRules = GetAndValidateTrigger(webhook, trigger, serializedRequest);
+            await ExecuteActionsAsync(webhookTriggerAndRules, webhook);
         }
 
         private async Task<Webhook> GetAndValidateWebhookAsync(string endpoint, string token = null)
@@ -53,7 +56,7 @@ namespace Medium.Services
             return webhook;
         }
 
-        private WebhookTrigger GetAndValidateTrigger(Webhook webhook, string triggerName, object request)
+        private Tuple<WebhookTrigger, IDictionary<string, IEnumerable<string>>> GetAndValidateTrigger(Webhook webhook, string triggerName, string serializedRequest)
         {
             var trigger = webhook.Triggers.SingleOrDefault(x => x.Name == triggerName.ToLowerInvariant());
             if(trigger == null)
@@ -63,40 +66,79 @@ namespace Medium.Services
 
             var requestType = _validatorResolver.GetRequestType(trigger.Type);
             var rulesType = _validatorResolver.GetRulesType(trigger.Type);
-            var serializedRequest = JsonConvert.SerializeObject(request);
             var deserializedRequest = JsonConvert.DeserializeObject(serializedRequest, requestType) as IRequest;
-            var serializedRules = JsonConvert.SerializeObject(trigger.Rules);
-            var deserializedRules = JsonConvert.DeserializeObject(serializedRules, rulesType);
-            var isTriggerValid = _validatorResolver.Validate(trigger.Type, deserializedRequest, deserializedRules);
-            if(!isTriggerValid)
+            var rulesActions = new Dictionary<string, IEnumerable<string>>();
+            foreach(var rule in trigger.Rules)
+            {
+                var serializedRules = JsonConvert.SerializeObject(rule.Value);
+                var deserializedRules = JsonConvert.DeserializeObject(serializedRules, rulesType);
+                var isRuleValid = _validatorResolver.Validate(trigger.Type, deserializedRequest, deserializedRules);
+                if(isRuleValid)
+                {
+                    if(trigger.RulesActions.ContainsKey(rule.Key))
+                    {
+                        rulesActions[rule.Key] = trigger.RulesActions[rule.Key];
+                    }
+                    else
+                    {
+                        rulesActions[rule.Key] = Enumerable.Empty<string>();
+                    }
+                }
+            }
+
+            if(!rulesActions.Any())
             {
                 throw new InvalidOperationException($"Trigger '{trigger.Name}' is not valid for webhook '{webhook.Name}'.");
             }
 
-            return trigger;
+            return new Tuple<WebhookTrigger, IDictionary<string, IEnumerable<string>>>(trigger, rulesActions);
         }
 
-        private async Task ExecuteActionsAsync(WebhookTrigger trigger, Webhook webhook)
+        private async Task ExecuteActionsAsync(Tuple<WebhookTrigger, IDictionary<string, IEnumerable<string>>> triggerAndRulesActions, Webhook webhook)
         {
+            var trigger = triggerAndRulesActions.Item1;
+            var rulesActions = triggerAndRulesActions.Item2;
             if(trigger.Actions.Any(x => x == "*"))
             {
                 await ExecuteAllActionsAsync(webhook);
-
-                return;
             }
 
             var tasks = new List<Task>();
-            foreach(var codename in trigger.Actions)
+            tasks.AddRange(GetTriggerActions(webhook, trigger.Actions));
+            foreach(var ruleActions in rulesActions)
             {
-                var action = webhook.Actions.Single(x => x.Codename == codename);
+                tasks.AddRange(GetTriggerActions(webhook, ruleActions.Value));
+            }
+            await Task.WhenAll(tasks);
+        }
+
+        private IEnumerable<Task> GetTriggerActions(Webhook webhook, IEnumerable<string> actions)
+        {
+            if(actions.Any(x => x == "*"))
+            {
+                foreach(var action in webhook.Actions)
+                {
+                    if(action.Inactive)
+                    {
+                        continue;
+                    }
+
+                    yield return  _httpClient.PostAsync(action.Url, action.Request, action.Headers);
+                }
+
+                yield break;
+            }
+
+            foreach(var codename in actions)
+            {
+                var action = webhook.Actions.Single(x => x.EqualsCodename(codename));
                 if(action.Inactive)
                 {
                     continue;
                 }
-                var task = _httpClient.PostAsync(action.Url, action.Request, action.Headers);
-                tasks.Add(task);
+
+                yield return  _httpClient.PostAsync(action.Url, action.Request, action.Headers);
             }
-            await Task.WhenAll(tasks);
         }
 
         private async Task ExecuteAllActionsAsync(Webhook webhook)

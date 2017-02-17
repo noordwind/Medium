@@ -49,14 +49,22 @@ namespace Medium.Domain
             Name = name.Trim().ToLowerInvariant();
         }
 
+        public bool EqualsCodename(string codename)
+        {
+            return Codename == GetCodename(codename);
+        }
+
         public void SetCodename(string codename)
         {
             if(string.IsNullOrWhiteSpace(codename))
             {
                 return;
             }
-            Codename = codename.Trim().Replace(" ", "-").ToLowerInvariant();
+            Codename = GetCodename(codename);
         }
+
+        private static string GetCodename(string codename)
+             => codename.Trim().Replace(" ", "-").ToLowerInvariant();
 
         public void SetUrl(string url)
         {

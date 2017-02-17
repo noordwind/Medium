@@ -45,104 +45,81 @@
           "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.Users/requests"
         }
       ],
-      "triggers": [
-        {
-          "name": "Common package added",
+      "triggers": [{
+          "name": "Package added",
           "provider": "myget",
           "type": "mygetpackageadded",
-          "actions": ["*"],
           "rules": {
-            "packageIdentifier": {
-              "value": "Coolector.Common",
-              "comparison": "equals"
+            "common": {
+              "packageIdentifier": {
+                "value": "Coolector.Common",
+                "comparison": "equals"
+              },
+              "feedIdentifier": {
+                "value": "coolector",
+                "comparison": "equals"
+              }
             },
-            "feedIdentifier": {
-              "value": "coolector",
-              "comparison": "equals"
-            }
-          }
+            "mailing-service": {
+              "packageIdentifier": {
+                "value": "Coolector.Services.Mailing.Shared",
+                "comparison": "equals"
+              },
+              "feedIdentifier": {
+                "value": "coolector",
+                "comparison": "equals"
+              }
+            },
+            "operations-service": {
+              "packageIdentifier": {
+                "value": "Coolector.Services.Operations.Shared",
+                "comparison": "equals"
+              },
+              "feedIdentifier": {
+                "value": "coolector",
+                "comparison": "equals"
+              }
+            },
+            "remarks-service": {
+              "packageIdentifier": {
+                "value": "Coolector.Services.Remarks.Shared",
+                "comparison": "equals"
+              },
+              "feedIdentifier": {
+                "value": "coolector",
+                "comparison": "equals"
+              }
+            },
+            "statistics-service": {
+              "packageIdentifier": {
+                "value": "Coolector.Services.Statistics.Shared",
+                "comparison": "equals"
+              },
+              "feedIdentifier": {
+                "value": "coolector",
+                "comparison": "equals"
+              }
+            },          
+            "users-service": {
+              "packageIdentifier": {
+                "value": "Coolector.Services.Users.Shared",
+                "comparison": "equals"
+              },
+              "feedIdentifier": {
+                "value": "coolector",
+                "comparison": "equals"
+              }
+            } 
         },
-        {
-          "name": "Mailing Service package added",
-          "provider": "myget",
-          "type": "mygetpackageadded",
-          "actions": ["Build Users Service"],
-          "rules": {
-            "packageIdentifier": {
-              "value": "Coolector.Services.Mailing.Shared",
-              "comparison": "equals"
-            },
-            "feedIdentifier": {
-              "value": "coolector",
-              "comparison": "equals"
-            }
-          }
-        },
-        {
-          "name": "Operations Service package added",
-          "provider": "myget",
-          "type": "mygetpackageadded",
-          "actions": ["Build API", "Build SignalR Service", "Build Storage Service"],
-          "rules": {
-            "packageIdentifier": {
-              "value": "Coolector.Services.Operations.Shared",
-              "comparison": "equals"
-            },
-            "feedIdentifier": {
-              "value": "coolector",
-              "comparison": "equals"
-            }
-          }
-        },
-        {
-          "name": "Remarks Service package added",
-          "provider": "myget",
-          "type": "mygetpackageadded",
-          "actions": ["Build API", "Build Operations Service", "Build SignalR Service", "Build Statistics Service", "Build Storage Service"],
-          "rules": {
-            "packageIdentifier": {
-              "value": "Coolector.Services.Remarks.Shared",
-              "comparison": "equals"
-            },
-            "feedIdentifier": {
-              "value": "coolector",
-              "comparison": "equals"
-            }
-          }
-        },
-        {
-          "name": "Statistics Service package added",
-          "provider": "myget",
-          "type": "mygetpackageadded",
-          "actions": ["Build API", "Build Storage Service"],
-          "rules": {
-            "packageIdentifier": {
-              "value": "Coolector.Services.Statistics.Shared",
-              "comparison": "equals"
-            },
-            "feedIdentifier": {
-              "value": "coolector",
-              "comparison": "equals"
-            }
-          }
-        },           
-        {
-          "name": "Users Service package added",
-          "provider": "myget",
-          "type": "mygetpackageadded",
-          "actions": ["Build API", "Build Operations Service", "Build Remarks Service", "Build Statistics Service", "Build Storage Service"],
-          "rules": {
-            "packageIdentifier": {
-              "value": "Coolector.Services.Users.Shared",
-              "comparison": "equals"
-            },
-            "feedIdentifier": {
-              "value": "coolector",
-              "comparison": "equals"
-            }
-          }
-        }      
-      ]
+        "rulesActions": {
+            "common": ["*"],
+            "mailing-service": ["Build Users Service"],
+            "operations-service": ["Build API", "Build SignalR Service", "Build Storage Service"],
+            "remarks-service": ["Build API", "Build Operations Service", "Build SignalR Service", "Build Statistics Service", "Build Storage Service"],
+            "statistics-service": ["Build API", "Build Storage Service"],
+            "users-service": ["Build API", "Build Operations Service", "Build Remarks Service", "Build Statistics Service", "Build Storage Service"]
+        }
+      }]
     },
     {
       "name": "MyGet package added to dev feed",
@@ -189,104 +166,81 @@
           "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Services.Users/requests"
         }
       ],
-      "triggers": [
-        {
-          "name": "Common package added",
+      "triggers": [{
+          "name": "Package added",
           "provider": "myget",
           "type": "mygetpackageadded",
-          "actions": ["*"],
           "rules": {
-            "packageIdentifier": {
-              "value": "Coolector.Common",
-              "comparison": "equals"
+            "common": {
+              "packageIdentifier": {
+                "value": "Coolector.Common",
+                "comparison": "equals"
+              },
+              "feedIdentifier": {
+                "value": "coolector-dev",
+                "comparison": "equals"
+              }
             },
-            "feedIdentifier": {
-              "value": "coolector-dev",
-              "comparison": "equals"
-            }
-          }
+            "mailing-service": {
+              "packageIdentifier": {
+                "value": "Coolector.Services.Mailing.Shared",
+                "comparison": "equals"
+              },
+              "feedIdentifier": {
+                "value": "coolector-dev",
+                "comparison": "equals"
+              }
+            },
+            "operations-service": {
+              "packageIdentifier": {
+                "value": "Coolector.Services.Operations.Shared",
+                "comparison": "equals"
+              },
+              "feedIdentifier": {
+                "value": "coolector-dev",
+                "comparison": "equals"
+              }
+            },
+            "remarks-service": {
+              "packageIdentifier": {
+                "value": "Coolector.Services.Remarks.Shared",
+                "comparison": "equals"
+              },
+              "feedIdentifier": {
+                "value": "coolector-dev",
+                "comparison": "equals"
+              }
+            },
+            "statistics-service": {
+              "packageIdentifier": {
+                "value": "Coolector.Services.Statistics.Shared",
+                "comparison": "equals"
+              },
+              "feedIdentifier": {
+                "value": "coolector-dev",
+                "comparison": "equals"
+              }
+            },          
+            "users-service": {
+              "packageIdentifier": {
+                "value": "Coolector.Services.Users.Shared",
+                "comparison": "equals"
+              },
+              "feedIdentifier": {
+                "value": "coolector-dev",
+                "comparison": "equals"
+              }
+            } 
         },
-        {
-          "name": "Mailing Service package added",
-          "provider": "myget",
-          "type": "mygetpackageadded",
-          "actions": ["Build Users Service"],
-          "rules": {
-            "packageIdentifier": {
-              "value": "Coolector.Services.Mailing.Shared",
-              "comparison": "equals"
-            },
-            "feedIdentifier": {
-              "value": "coolector-dev",
-              "comparison": "equals"
-            }
-          }
-        },
-        {
-          "name": "Operations Service package added",
-          "provider": "myget",
-          "type": "mygetpackageadded",
-          "actions": ["Build API", "Build SignalR Service", "Build Storage Service"],
-          "rules": {
-            "packageIdentifier": {
-              "value": "Coolector.Services.Operations.Shared",
-              "comparison": "equals"
-            },
-            "feedIdentifier": {
-              "value": "coolector-dev",
-              "comparison": "equals"
-            }
-          }
-        },
-        {
-          "name": "Remarks Service package added",
-          "provider": "myget",
-          "type": "mygetpackageadded",
-          "actions": ["Build API", "Build Operations Service", "Build SignalR Service", "Build Statistics Service", "Build Storage Service"],
-          "rules": {
-            "packageIdentifier": {
-              "value": "Coolector.Services.Remarks.Shared",
-              "comparison": "equals"
-            },
-            "feedIdentifier": {
-              "value": "coolector-dev",
-              "comparison": "equals"
-            }
-          }
-        },
-        {
-          "name": "Statistics Service package added",
-          "provider": "myget",
-          "type": "mygetpackageadded",
-          "actions": ["Build API", "Build Storage Service"],
-          "rules": {
-            "packageIdentifier": {
-              "value": "Coolector.Services.Statistics.Shared",
-              "comparison": "equals"
-            },
-            "feedIdentifier": {
-              "value": "coolector-dev",
-              "comparison": "equals"
-            }
-          }
-        },           
-        {
-          "name": "Users Service package added",
-          "provider": "myget",
-          "type": "mygetpackageadded",
-          "actions": ["Build API", "Build Operations Service", "Build Remarks Service", "Build Statistics Service", "Build Storage Service"],
-          "rules": {
-            "packageIdentifier": {
-              "value": "Coolector.Services.Users.Shared",
-              "comparison": "equals"
-            },
-            "feedIdentifier": {
-              "value": "coolector-dev",
-              "comparison": "equals"
-            }
-          }
-        }      
-      ]
+        "rulesActions": {
+            "common": ["*"],
+            "mailing-service": ["Build Users Service"],
+            "operations-service": ["Build API", "Build SignalR Service", "Build Storage Service"],
+            "remarks-service": ["Build API", "Build Operations Service", "Build SignalR Service", "Build Statistics Service", "Build Storage Service"],
+            "statistics-service": ["Build API", "Build Storage Service"],
+            "users-service": ["Build API", "Build Operations Service", "Build Remarks Service", "Build Statistics Service", "Build Storage Service"]
+        }
+      }]
     }
   ]
 }

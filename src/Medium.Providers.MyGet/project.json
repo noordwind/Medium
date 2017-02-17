@@ -2,14 +2,15 @@
   "name": "Medium.Providers.MyGet",
   "authors": [ "Noordwind" ],
   "title": "Medium.Providers.MyGet",
-  "version": "1.0.0-alpha-1",
+  "version": "1.0.0-alpha-4",
   "packOptions": {
     "licenseUrl": "https://github.com/noordwind/Medium/blob/master/LICENSE",
     "projectUrl": "https://github.com/noordwind/Medium",
     "packageType": "DotnetCliTool"
   },
   "dependencies": {
-    "Medium": "1.0.*"
+    "Medium": "1.0.*",
+    "Microsoft.AspNetCore.Mvc": "1.1.0"
   },
   "frameworks": {
     "netstandard1.6": {

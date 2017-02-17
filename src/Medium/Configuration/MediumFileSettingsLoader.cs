@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace Medium.Integrations.AspNetCore.Configuration
+namespace Medium.Configuration
 {
     public class MediumFileSettingsLoader : IMediumSettingsLoader
     {

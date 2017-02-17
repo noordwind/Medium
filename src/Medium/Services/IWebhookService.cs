@@ -7,6 +7,7 @@ namespace Medium.Services
     public interface IWebhookService
     {
         Task<IEnumerable<Webhook>> GetAllAsync();
+        Task ExecuteAsync(string endpoint, string trigger, string serializedRequest, string token = null);
         Task ExecuteAsync(string endpoint, string trigger, object request, string token = null);
     }
 }

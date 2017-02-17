@@ -12,8 +12,9 @@ namespace Medium.Domain
         private ISet<string> _requesters = new HashSet<string>();  
         public string Name { get; protected set; }
         public string Type { get; protected set; }
-        public object Rules { get; protected set; }
+        public IDictionary<string, object> Rules { get; protected set; } = new Dictionary<string, object>();
         public bool Inactive { get; protected set; }
+        public IDictionary<string, IEnumerable<string>> RulesActions  { get; protected set; } = new Dictionary<string, IEnumerable<string>>();
 
         public IEnumerable<string> Actions 
         {
@@ -60,16 +61,6 @@ namespace Medium.Domain
                 return trigger;
             }
 
-        public static WebhookTrigger Create<TRequest, TRules>(string name, TRules rules) 
-            where TRequest : IRequest where TRules : class
-            {
-                var trigger = new WebhookTrigger(name);
-                trigger.SetRules(rules);
-                trigger.SetType<TRequest>();
-
-                return trigger;
-            }
-
         public void SetName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -90,22 +81,6 @@ namespace Medium.Domain
             }
 
             Name = name.Trim().Replace(" ", "-").ToLowerInvariant();
-        }
-
-        public void SetRules<T>(T rules) where T : class
-        {
-            if(rules == null)
-            {
-                ClearRules();
-
-                return;
-            }
-            Rules = rules;
-        }
-
-        public void ClearRules()
-        {
-            Rules = null;
         }
 
         public void AddRequester(string host)

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Medium.Configuration.Models;
 
 namespace Medium.Integrations.AspNetCore.Configuration
 {

@@ -41,7 +41,10 @@ namespace Medium.Api
                     .AddMyGetProvider()
                     .AddInMemoryRepository();
 
-            services.AddMvc()
+            services.AddMvc(options =>
+                    {
+                        options.InputFormatters.AddMyGetFormatter();
+                    })
                     .AddJsonOptions(x => 
                     {
                         x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();

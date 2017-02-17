@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Lockbox.Client;
-using Medium.Integrations.AspNetCore.Configuration;
+using Medium.Configuration;
+using Medium.Configuration.Models;
 using Newtonsoft.Json;
 
 namespace Medium.Integrations.Lockbox
@@ -57,6 +59,11 @@ namespace Medium.Integrations.Lockbox
             }
 
             throw new ArgumentException($"Lockbox {parameterName} can not be empty!", nameof(parameter));
+        }
+
+        private class MediumSettings
+        {
+            public IEnumerable<WebhookModel> Webhooks { get; set; }
         }
     }
 }
