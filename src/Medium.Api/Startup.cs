@@ -1,14 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Medium.Integrations.AspNetCore;
-using Medium.Integrations.AspNetCore.Configuration;
-using Medium.Integrations.Lockbox;
 using Medium.Providers.MyGet;
-using Medium.Repositories;
-using Medium.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -41,10 +32,7 @@ namespace Medium.Api
                     .AddMyGetProvider()
                     .AddInMemoryRepository();
 
-            services.AddMvc(options =>
-                    {
-                        options.InputFormatters.AddMyGetFormatter();
-                    })
+            services.AddMvc(options => options.InputFormatters.AddMyGetFormatter())
                     .AddJsonOptions(x => 
                     {
                         x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
