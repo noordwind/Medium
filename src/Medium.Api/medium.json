@@ -1,6 +1,42 @@
 ﻿{
   "webhooks": [
     {
+      "name": "My request",
+      "endpoint": "my",
+      "token": "secret",
+      "defaultHeaders": {
+        "Content-Type": "application/json",
+        "Acccept": "application/json"
+      },
+      "defaultRequest": { "message": "Hello" },
+      "actions": [
+        {
+          "name": "Send my request",
+          "url": "https://google.com"
+        }
+      ],
+      "triggers": [{
+        "name": "My trigger",
+        "actions": ["Send my request"],
+        "rules": {
+          "default": {
+            "message": {
+              "value": "hello",
+              "comparison": "equals"
+            }, 
+            "user.id": {
+              "value": "123",
+              "comparison": "equals"
+            }, 
+            "user.name": {
+              "value": "spetz",
+              "comparison": "equals"
+            }
+          }
+        }
+      }]
+    },
+    {
       "name": "MyGet package added to feed",
       "endpoint": "myget",
       "token": "secret",
@@ -235,43 +271,6 @@
             "remarks-service": ["Build API", "Build Operations Service", "Build SignalR Service", "Build Statistics Service", "Build Storage Service"],
             "statistics-service": ["Build API", "Build Storage Service"],
             "users-service": ["Build API", "Build Operations Service", "Build Remarks Service", "Build Statistics Service", "Build Storage Service"]
-        }
-      }]
-    },
-    {
-      "name": "My request",
-      "endpoint": "my",
-      "token": "secret",
-      "defaultHeaders": {
-        "Content-Type": "application/json",
-        "Acccept": "application/json",
-        "Travis-API-Version": "3",
-        "Authorization": "token secret"
-      },
-      "defaultRequest": { "branch": "master" },
-      "actions": [
-        {
-          "name": "Build API",
-          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Api/requests"
-        }
-      ],
-      "triggers": [{
-        "name": "My trigger",
-        "rules": {
-          "custom": {
-            "message": {
-              "value": "hello",
-              "comparison": "equals"
-            }, 
-            "user.id": {
-              "value": "123",
-              "comparison": "equals"
-            }, 
-            "user.name": {
-              "value": "spetz",
-              "comparison": "equals"
-            }
-          }
         }
       }]
     }
