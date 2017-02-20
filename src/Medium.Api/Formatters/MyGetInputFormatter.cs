@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Newtonsoft.Json;
 
-namespace Medium.Providers.MyGet
+namespace Medium.Api.Formatters
 {
     public class MyGetInputFormatter : InputFormatter
     {

@@ -11,7 +11,6 @@ namespace Medium.Domain
         private ISet<string> _actions = new HashSet<string>();  
         private ISet<string> _requesters = new HashSet<string>();  
         public string Name { get; protected set; }
-        public string Type { get; protected set; }
         public IDictionary<string, IDictionary<string, Rule>> Rules { get; protected set; } = new Dictionary<string, IDictionary<string, Rule>>();
         public bool Inactive { get; protected set; }
         public IDictionary<string, IEnumerable<string>> RulesActions  { get; protected set; } = new Dictionary<string, IEnumerable<string>>();
@@ -38,25 +37,15 @@ namespace Medium.Domain
         {
         }
 
-        protected WebhookTrigger(string name, string type = null)
+        protected WebhookTrigger(string name)
         {
             SetName(name);
-            Type = type;
             Activate();
         }
 
-        public static WebhookTrigger Create(string name, string type) 
-            {
-                var trigger = new WebhookTrigger(name, type);
-
-                return trigger;
-            }
-
-        public static WebhookTrigger Create<TRequest>(string name) 
-            where TRequest : IRequest
+        public static WebhookTrigger Create(string name) 
             {
                 var trigger = new WebhookTrigger(name);
-                trigger.SetType<TRequest>();
 
                 return trigger;
             }
@@ -153,11 +142,6 @@ namespace Medium.Domain
         public void Deactivate()
         {
             Inactive = true;
-        }
-
-        private void SetType<TRequest>()
-        {
-            Type = typeof(TRequest).Name.ToLowerInvariant().Replace("request", string.Empty);
         }
     }
 }

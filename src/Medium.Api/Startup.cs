@@ -1,8 +1,5 @@
-using System;
-using Medium.Domain;
+using Medium.Api.Formatters;
 using Medium.Integrations.AspNetCore;
-using Medium.Providers;
-using Medium.Providers.MyGet;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -32,11 +29,9 @@ namespace Medium.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMedium()
-                    .AddProvider<MyRequest>()
-                    .AddMyGetProvider()
                     .AddInMemoryRepository();
 
-            services.AddMvc(options => options.InputFormatters.AddMyGetFormatter())
+            services.AddMvc(options => options.InputFormatters.Add(new MyGetInputFormatter()))
                     .AddJsonOptions(x => 
                     {
                         x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
@@ -59,11 +54,4 @@ namespace Medium.Api
             app.UseMvc();
         }
     }
-
-    public class MyRequest : IRequest
-    {
-        public Guid Identifier { get; set; }
-        public string Username { get; set; }
-        public DateTime When { get; set; }
-    } 
 }

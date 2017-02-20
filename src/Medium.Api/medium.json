@@ -47,7 +47,6 @@
       ],
       "triggers": [{
           "name": "Package added",
-          "type": "mygetpackageadded",
           "rules": {
             "common": {
               "payload.packageIdentifier": {
@@ -167,7 +166,6 @@
       ],
       "triggers": [{
           "name": "Package added",
-          "type": "mygetpackageadded",
           "rules": {
             "common": {
               "payload.packageIdentifier": {
@@ -259,17 +257,20 @@
       ],
       "triggers": [{
         "name": "My trigger",
-        "type": "my",
         "rules": {
           "custom": {
-            "username": {
+            "message": {
+              "value": "hello",
+              "comparison": "equals"
+            }, 
+            "user.id": {
+              "value": "123",
+              "comparison": "equals"
+            }, 
+            "user.name": {
               "value": "spetz",
               "comparison": "equals"
-            },
-            "payload.feedIdentifier": {
-              "value": "coolector",
-              "comparison": "equals"
-            } 
+            }
           }
         }
       }]

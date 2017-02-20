@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Medium.Domain;
 
-namespace Medium.Repositories
+namespace Medium.Persistence
 {
     public class InMemoryWebhookRepository : IWebhookRepository
     {

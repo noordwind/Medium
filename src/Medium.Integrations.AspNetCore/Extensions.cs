@@ -17,11 +17,9 @@ namespace Medium.Integrations.AspNetCore
         public static IMediumConfigurator AddMedium(this IServiceCollection services)
         {
             var container = new ServiceContainer(services);
-            var resolver = new WebhookTriggerValidatorResolver();
             container.RegisterSingleton<IHttpClient, CustomHttpClient>();
-            container.RegisterSingleton<IWebhookTriggerValidatorResolver>(resolver);
             container.RegisterTransient<IWebhookService, WebhookService>();
-            var configurator = new MediumConfigurator(container, resolver);
+            var configurator = new MediumConfigurator(container);
 
             return configurator;
         }

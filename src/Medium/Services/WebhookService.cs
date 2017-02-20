@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Medium.Domain;
-using Medium.Repositories;
+using Medium.Persistence;
 using Newtonsoft.Json;
 
 namespace Medium.Services
@@ -12,15 +12,12 @@ namespace Medium.Services
     public class WebhookService : IWebhookService
     {
         private readonly IWebhookRepository _webhookRepository;
-        private readonly IWebhookTriggerValidatorResolver _validatorResolver;
         private readonly IHttpClient _httpClient;
 
         public WebhookService(IWebhookRepository webhookRepository, 
-            IWebhookTriggerValidatorResolver validatorResolver,
             IHttpClient httpClient)
         {
             _webhookRepository = webhookRepository;
-            _validatorResolver = validatorResolver;
             _httpClient = httpClient;
         }
 
@@ -64,14 +61,14 @@ namespace Medium.Services
                 throw new ArgumentException($"Trigger '{triggerName}' was not found for webhook '{webhook.Name}'.");
             }
 
-            var requestType = _validatorResolver.GetRequestType(trigger.Type);
-            var deserializedRequest = JsonConvert.DeserializeObject(serializedRequest, requestType) as IRequest;
+            var deserializedRequest = JsonConvert.DeserializeObject(serializedRequest);
             var rulesActions = new Dictionary<string, IEnumerable<string>>();
             foreach(var rule in trigger.Rules)
             {
                 var serializedRules = JsonConvert.SerializeObject(rule.Value);
                 var deserializedRules = JsonConvert.DeserializeObject<IDictionary<string, Rule>>(serializedRules);
-                var isRuleValid = _validatorResolver.Validate(trigger.Type, deserializedRequest, deserializedRules);
+                var validator = new RequestValidator();
+                var isRuleValid = validator.Validate(deserializedRequest, deserializedRules);
                 if(isRuleValid)
                 {
                     if(trigger.RulesActions.ContainsKey(rule.Key))

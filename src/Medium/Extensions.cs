@@ -1,5 +1,5 @@
 using Medium.Configuration;
-using Medium.Repositories;
+using Medium.Persistence;
 
 namespace Medium
 {

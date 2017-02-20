@@ -9,7 +9,6 @@ namespace Medium.Configuration.Models
     {
         public string Name { get; set; }
         public bool Inactive { get; set; }   
-        public string Type { get; set; }
         public IDictionary<string, IDictionary<string, RuleModel>> Rules { get; set; }
         public IDictionary<string, IEnumerable<string>> RulesActions  { get;  set; }
         public IEnumerable<string> Actions { get; set; }
@@ -17,7 +16,7 @@ namespace Medium.Configuration.Models
 
         public static WebhookTrigger MapToWebhookTrigger(WebhookTriggerModel model)
         {
-            var trigger = WebhookTrigger.Create(model.Name, model.Type);
+            var trigger = WebhookTrigger.Create(model.Name);
             if(model.Inactive)
             {
                 trigger.Deactivate();

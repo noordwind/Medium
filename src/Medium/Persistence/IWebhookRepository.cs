@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Medium.Domain;
 
-namespace Medium.Repositories
+namespace Medium.Persistence
 {
     public interface IWebhookRepository
     {

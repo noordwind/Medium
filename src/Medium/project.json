@@ -2,14 +2,15 @@
   "name": "Medium",
   "authors": [ "Noordwind" ],
   "title": "Medium",
-  "version": "1.0.0-alpha-4",
+  "version": "1.0.0-beta-1",
   "packOptions": {
     "licenseUrl": "https://github.com/noordwind/Medium/blob/master/LICENSE",
     "projectUrl": "https://github.com/noordwind/Medium",
     "packageType": "DotnetCliTool"
   },
   "dependencies": {
-    "Newtonsoft.Json": "9.0.1"
+    "Newtonsoft.Json": "9.0.1",
+    "Microsoft.Extensions.Configuration.Json": "1.1.0"
   },
   "frameworks": {
     "netstandard1.6": {
