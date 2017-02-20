@@ -65,13 +65,12 @@ namespace Medium.Services
             }
 
             var requestType = _validatorResolver.GetRequestType(trigger.Type);
-            var rulesType = _validatorResolver.GetRulesType(trigger.Type);
             var deserializedRequest = JsonConvert.DeserializeObject(serializedRequest, requestType) as IRequest;
             var rulesActions = new Dictionary<string, IEnumerable<string>>();
             foreach(var rule in trigger.Rules)
             {
                 var serializedRules = JsonConvert.SerializeObject(rule.Value);
-                var deserializedRules = JsonConvert.DeserializeObject(serializedRules, rulesType);
+                var deserializedRules = JsonConvert.DeserializeObject<IDictionary<string, Rule>>(serializedRules);
                 var isRuleValid = _validatorResolver.Validate(trigger.Type, deserializedRequest, deserializedRules);
                 if(isRuleValid)
                 {

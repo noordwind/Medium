@@ -12,7 +12,7 @@ namespace Medium.Domain
         private ISet<string> _requesters = new HashSet<string>();  
         public string Name { get; protected set; }
         public string Type { get; protected set; }
-        public IDictionary<string, object> Rules { get; protected set; } = new Dictionary<string, object>();
+        public IDictionary<string, IDictionary<string, Rule>> Rules { get; protected set; } = new Dictionary<string, IDictionary<string, Rule>>();
         public bool Inactive { get; protected set; }
         public IDictionary<string, IEnumerable<string>> RulesActions  { get; protected set; } = new Dictionary<string, IEnumerable<string>>();
 

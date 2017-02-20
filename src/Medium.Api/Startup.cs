@@ -1,4 +1,7 @@
+using System;
+using Medium.Domain;
 using Medium.Integrations.AspNetCore;
+using Medium.Providers;
 using Medium.Providers.MyGet;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,6 +32,7 @@ namespace Medium.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMedium()
+                    .AddProvider<MyRequest>()
                     .AddMyGetProvider()
                     .AddInMemoryRepository();
 
@@ -55,4 +59,11 @@ namespace Medium.Api
             app.UseMvc();
         }
     }
+
+    public class MyRequest : IRequest
+    {
+        public Guid Identifier { get; set; }
+        public string Username { get; set; }
+        public DateTime When { get; set; }
+    } 
 }

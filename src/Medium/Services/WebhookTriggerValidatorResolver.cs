@@ -6,11 +6,10 @@ namespace Medium.Services
 {
     public class WebhookTriggerValidatorResolver : IWebhookTriggerValidatorResolver
     {
-        private readonly IDictionary<string, Func<IRequest, object, bool>> _validators = new Dictionary<string, Func<IRequest, object, bool>>();
+        private readonly IDictionary<string, Func<IRequest, IDictionary<string, Rule>, bool>> _validators = new Dictionary<string, Func<IRequest, IDictionary<string, Rule>, bool>>();
         private readonly IDictionary<string, Type> _requestTypes  = new Dictionary<string, Type>();
-        private readonly IDictionary<string, Type> _rulesTypes  = new Dictionary<string, Type>();
 
-        public void Register<TRequest,TRules>(Func<IRequest, object, bool> validator, string type = null)
+        public void Register<TRequest>(Func<IRequest, IDictionary<string, Rule>, bool> validator, string type = null)
         {
             if(validator == null)
             {
@@ -22,13 +21,16 @@ namespace Medium.Services
             {
                 key = type.ToLowerInvariant();
             }
+            if(_validators.ContainsKey(key))
+            {
+                throw new InvalidOperationException($"Validator for type '{key}' already exists.");
+            }
 
             _validators[key] = validator;
             _requestTypes[key] = typeof(TRequest);
-            _rulesTypes[key] = typeof(TRules);
         }
 
-        public bool Validate(string type, IRequest request, object rules)
+        public bool Validate(string type, IRequest request, IDictionary<string, Rule> rules)
         {
             if(string.IsNullOrWhiteSpace(type))
             {
@@ -66,22 +68,6 @@ namespace Medium.Services
             }
 
             return _requestTypes[key];
-        }
-
-        public Type GetRulesType(string type)
-        {
-            if(string.IsNullOrWhiteSpace(type))
-            {
-                throw new ArgumentException($"Validator type can not be empty.", nameof(type));
-            }
-
-            var key = type.ToLowerInvariant();
-            if(!_validators.ContainsKey(key))
-            {
-                throw new InvalidOperationException($"Validator for '{type}' was not found.");
-            }
-
-            return _rulesTypes[key];
         }
     }
 }

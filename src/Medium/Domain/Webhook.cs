@@ -10,7 +10,6 @@ namespace Medium.Domain
         private static readonly Regex NameRegex = new Regex("([a-zA-Z1-9 _\\-])\\w+", RegexOptions.Compiled);
         private ISet<WebhookAction> _actions = new HashSet<WebhookAction>();  
         private ISet<WebhookTrigger> _triggers = new HashSet<WebhookTrigger>();  
-
         public Guid Id { get; protected set; }
         public string Name { get; protected set; }
         public string Endpoint { get; protected set; }

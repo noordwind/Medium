@@ -47,65 +47,64 @@
       ],
       "triggers": [{
           "name": "Package added",
-          "provider": "myget",
           "type": "mygetpackageadded",
           "rules": {
             "common": {
-              "packageIdentifier": {
+              "payload.packageIdentifier": {
                 "value": "Coolector.Common",
                 "comparison": "equals"
               },
-              "feedIdentifier": {
+              "payload.feedIdentifier": {
                 "value": "coolector",
                 "comparison": "equals"
               }
             },
             "mailing-service": {
-              "packageIdentifier": {
+              "payload.packageIdentifier": {
                 "value": "Coolector.Services.Mailing.Shared",
                 "comparison": "equals"
               },
-              "feedIdentifier": {
+              "payload.feedIdentifier": {
                 "value": "coolector",
                 "comparison": "equals"
               }
             },
             "operations-service": {
-              "packageIdentifier": {
+              "payload.packageIdentifier": {
                 "value": "Coolector.Services.Operations.Shared",
                 "comparison": "equals"
               },
-              "feedIdentifier": {
+              "payload.feedIdentifier": {
                 "value": "coolector",
                 "comparison": "equals"
               }
             },
             "remarks-service": {
-              "packageIdentifier": {
+              "payload.packageIdentifier": {
                 "value": "Coolector.Services.Remarks.Shared",
                 "comparison": "equals"
               },
-              "feedIdentifier": {
+              "payload.feedIdentifier": {
                 "value": "coolector",
                 "comparison": "equals"
               }
             },
             "statistics-service": {
-              "packageIdentifier": {
+              "payload.packageIdentifier": {
                 "value": "Coolector.Services.Statistics.Shared",
                 "comparison": "equals"
               },
-              "feedIdentifier": {
+              "payload.feedIdentifier": {
                 "value": "coolector",
                 "comparison": "equals"
               }
             },          
             "users-service": {
-              "packageIdentifier": {
+              "payload.packageIdentifier": {
                 "value": "Coolector.Services.Users.Shared",
                 "comparison": "equals"
               },
-              "feedIdentifier": {
+              "payload.feedIdentifier": {
                 "value": "coolector",
                 "comparison": "equals"
               }
@@ -168,65 +167,64 @@
       ],
       "triggers": [{
           "name": "Package added",
-          "provider": "myget",
           "type": "mygetpackageadded",
           "rules": {
             "common": {
-              "packageIdentifier": {
+              "payload.packageIdentifier": {
                 "value": "Coolector.Common",
                 "comparison": "equals"
               },
-              "feedIdentifier": {
+              "payload.feedIdentifier": {
                 "value": "coolector-dev",
                 "comparison": "equals"
               }
             },
             "mailing-service": {
-              "packageIdentifier": {
+              "payload.packageIdentifier": {
                 "value": "Coolector.Services.Mailing.Shared",
                 "comparison": "equals"
               },
-              "feedIdentifier": {
+              "payload.feedIdentifier": {
                 "value": "coolector-dev",
                 "comparison": "equals"
               }
             },
             "operations-service": {
-              "packageIdentifier": {
+              "payload.packageIdentifier": {
                 "value": "Coolector.Services.Operations.Shared",
                 "comparison": "equals"
               },
-              "feedIdentifier": {
+              "payload.feedIdentifier": {
                 "value": "coolector-dev",
                 "comparison": "equals"
               }
             },
             "remarks-service": {
-              "packageIdentifier": {
+              "payload.packageIdentifier": {
                 "value": "Coolector.Services.Remarks.Shared",
                 "comparison": "equals"
               },
-              "feedIdentifier": {
+              "payload.feedIdentifier": {
                 "value": "coolector-dev",
                 "comparison": "equals"
               }
             },
             "statistics-service": {
-              "packageIdentifier": {
+              "payload.packageIdentifier": {
                 "value": "Coolector.Services.Statistics.Shared",
                 "comparison": "equals"
               },
-              "feedIdentifier": {
+              "payload.feedIdentifier": {
                 "value": "coolector-dev",
                 "comparison": "equals"
               }
             },          
             "users-service": {
-              "packageIdentifier": {
+              "payload.packageIdentifier": {
                 "value": "Coolector.Services.Users.Shared",
                 "comparison": "equals"
               },
-              "feedIdentifier": {
+              "payload.feedIdentifier": {
                 "value": "coolector-dev",
                 "comparison": "equals"
               }
@@ -239,6 +237,40 @@
             "remarks-service": ["Build API", "Build Operations Service", "Build SignalR Service", "Build Statistics Service", "Build Storage Service"],
             "statistics-service": ["Build API", "Build Storage Service"],
             "users-service": ["Build API", "Build Operations Service", "Build Remarks Service", "Build Statistics Service", "Build Storage Service"]
+        }
+      }]
+    },
+    {
+      "name": "My request",
+      "endpoint": "my",
+      "token": "secret",
+      "defaultHeaders": {
+        "Content-Type": "application/json",
+        "Acccept": "application/json",
+        "Travis-API-Version": "3",
+        "Authorization": "token secret"
+      },
+      "defaultRequest": { "branch": "master" },
+      "actions": [
+        {
+          "name": "Build API",
+          "url": "https://api.travis-ci.org/repo/noordwind%2FCoolector.Api/requests"
+        }
+      ],
+      "triggers": [{
+        "name": "My trigger",
+        "type": "my",
+        "rules": {
+          "custom": {
+            "username": {
+              "value": "spetz",
+              "comparison": "equals"
+            },
+            "payload.feedIdentifier": {
+              "value": "coolector",
+              "comparison": "equals"
+            } 
+          }
         }
       }]
     }

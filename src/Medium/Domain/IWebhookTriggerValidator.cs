@@ -1,8 +1,9 @@
+using System.Collections.Generic;
+
 namespace Medium.Domain
 {
-    public interface IWebhookTriggerValidator<in TRequest, in TRules> 
-        where TRequest : IRequest where TRules : class
+    public interface IWebhookTriggerValidator<in TRequest> where TRequest : IRequest
     {
-         bool Validate(TRequest request, TRules rules);
+         bool Validate(TRequest request, IDictionary<string,Rule> rules);
     }
 }

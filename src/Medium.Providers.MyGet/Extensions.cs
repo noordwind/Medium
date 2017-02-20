@@ -7,7 +7,7 @@ namespace Medium.Providers.MyGet
     {
         public static IMediumConfigurator AddMyGetProvider(this IMediumConfigurator configurator)
         {
-            configurator.AddProvider(new MyGetProvider());
+            configurator.AddProvider(new Provider<MyGetPackageAddedRequest>());
 
             return configurator;
         }
@@ -18,6 +18,5 @@ namespace Medium.Providers.MyGet
 
             return formatters;
         }
-        
     }
 }

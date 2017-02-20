@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Medium.Domain;
@@ -9,7 +10,7 @@ namespace Medium.Configuration.Models
         public string Name { get; set; }
         public bool Inactive { get; set; }   
         public string Type { get; set; }
-        public IDictionary<string, object> Rules { get;  set; }
+        public IDictionary<string, IDictionary<string, RuleModel>> Rules { get; set; }
         public IDictionary<string, IEnumerable<string>> RulesActions  { get;  set; }
         public IEnumerable<string> Actions { get; set; }
         public IEnumerable<string> Requesters { get; set; }
@@ -29,9 +30,13 @@ namespace Medium.Configuration.Models
             {
                 trigger.AddRequester(requester);
             }
-            foreach (var rule in model.Rules ?? new Dictionary<string, object>())
+            foreach (var rule in model.Rules ?? new Dictionary<string, IDictionary<string, RuleModel>>())
             {
-                trigger.Rules[rule.Key] = rule.Value;
+                trigger.Rules[rule.Key] = rule.Value.ToDictionary(x => x.Key, x => new Rule
+                {
+                    Comparison = (Comparison)Enum.Parse(typeof(Comparison), x.Value.Comparison, true),
+                    Value = x.Value.Value
+                });
             }
             foreach (var ruleActions in model.RulesActions ?? new Dictionary<string, IEnumerable<string>>())
             {
