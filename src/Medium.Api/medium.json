@@ -2,17 +2,17 @@
   "webhooks": [
     {
       "name": "My request",
-      "endpoint": "my",
+      "endpoint": "my-endpoint",
       "token": "secret",
       "defaultHeaders": {
         "Content-Type": "application/json",
         "Acccept": "application/json"
       },
-      "defaultRequest": { "message": "Hello" },
+      "defaultRequest": { "greeting": "Hello from Medium!" },
       "actions": [
         {
           "name": "Send my request",
-          "url": "https://google.com"
+          "url": "http://localhost:5000/api/test"
         }
       ],
       "triggers": [{
@@ -25,11 +25,11 @@
               "comparison": "equals"
             }, 
             "user.id": {
-              "value": "123",
+              "value": "1",
               "comparison": "equals"
             }, 
             "user.name": {
-              "value": "spetz",
+              "value": "piotr",
               "comparison": "equals"
             }
           }

@@ -27,8 +27,7 @@ With **Medium** you can build any sort of pipeline that you wish (e.g. deploymen
 |Name                      |Description   
 |--------------------------|-----------------------------------------------------                                    
 |ASP.NET Core integration  |Running Medium within [ASP.NET Core](https://www.asp.net/core) application.
-|Lockbox integration       |Loading encrypted settings from [Lockbox](https://github.com/Lockbox-stack/Lockbox).
-|MyGet provider            |Requests and validation rules for [MyGet](https://www.myget.org/) webhooks.
+|Lockbox integration       |Loading encrypted settings from [Lockbox](https://getlockbox.com).
 
 
 **Quick start**
@@ -37,32 +36,71 @@ With **Medium** you can build any sort of pipeline that you wish (e.g. deploymen
 **ASP.NET Core**
 ----------------
 
+Please note that *Medium* does not require to use *ASP.NET Core*, as it's a simple libary that can be included within any type of a project.
+
 Install packages via NuGet:
 ```
 Install-Package Medium -Pre
 Install-Package Medium.Integrations.AspNetCore -Pre
 ```
 
-Create a *medium.json* file in the main directory, where you can define your configuration:
+Create a *medium.json* file in the main directory, where you can define the configuration:
 ```json
-TODO
+{
+  "webhooks": [
+    {
+      "name": "My webhook",
+      "endpoint": "my-endpoint",
+      "token": "secret",
+      "defaultHeaders": {
+        "Content-Type": "application/json",
+        "Acccept": "application/json"
+      },
+      "defaultRequest": { "greeting": "Hello from Medium!" },
+      "actions": [
+        {
+          "name": "Send my request",
+          "url": "http://localhost:5000/api/test"
+        }
+      ],
+      "triggers": [{
+        "name": "My trigger",
+        "actions": ["Send my request"],
+        "rules": {
+          "default": {
+            "message": {
+              "value": "hello",
+              "comparison": "equals"
+            }, 
+            "user.id": {
+              "value": "1",
+              "comparison": "equals"
+            }, 
+            "user.name": {
+              "value": "piotr",
+              "comparison": "equals"
+            }
+          }
+        }
+      }]
+    }
+  ]
+}
 ```
 
 Edit your *Startup.cs* file:
+
 ```cs
 public void ConfigureServices(IServiceCollection services)
 {
     services.AddMedium()
-            .AddMyGetProvider()
             .AddInMemoryRepository();
-
-    services.AddMvc(options => options.InputFormatters.AddMyGetFormatter());
 }
 
 public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 {
-    app.UseMedium();
-    app.UseMvc();
+    app.UseMedium()
+       .UseMvc();
 }
 ```
 
@@ -93,8 +131,44 @@ public class WebhooksController : Controller
 }
 ```
 
-Run the application and send a POST request to the following URL: *http://localhost:5000/api/webhooks/my-endpoint?token=secret&trigger=test-trigger*
+And another one for the trigger action testing purposes:
 
-That's it!
+```cs
+[Route("api/[controller]")]
+public class TestController : Controller
+{
+    private readonly ILogger<TestController> _logger;
+
+    public TestController(ILogger<TestController> logger)
+    {
+        _logger = logger;
+    }
+
+    [HttpPost]
+    public void Post([FromBody]object request)
+    {
+        _logger.LogInformation("Test action was triggered by webhook.");
+    }
+}
+```
+
+Run the application and execute a following POST request to the URL: *http://localhost:5000/api/webhooks/my-endpoint?token=secret&trigger=my-trigger*
+```
+HTTP Headers:
+Content-Type: application/json
+```
+```json
+{
+	"message": "hello",
+	"user": {
+		"id": 1, 
+		"name": "piotr"
+	}
+}
+```
+
+You'll see */api/test* endpoint being invoked. And that's it - feel free to include more triggers, actions, different URLs, requests and so on.
+
+In order to find out how to extend the configuration and define much more sophisticated scenarios of use [read the wiki](https://github.com/noordwind/Medium/wiki).
 
 

@@ -50,8 +50,8 @@ namespace Medium.Api
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            app.UseMedium();
-            app.UseMvc();
+            app.UseMedium()
+               .UseMvc();
         }
     }
 }
