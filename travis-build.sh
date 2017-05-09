@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
-dotnet restore --source "https://api.nuget.org/v3/index.json" --no-cache
-dotnet build **/project.json
+cd src/Medium
+dotnet restore --no-cache
+dotnet build

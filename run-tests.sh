@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-dotnet test src/Medium.Tests
+cd src/Medium.Tests
+dotnet test
