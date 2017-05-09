@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyTitle>Medium.Persistence.Mongo</AssemblyTitle>
+    <VersionPrefix>1.0.0-alpha-1</VersionPrefix>
+    <Authors>Noordwind</Authors>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <AssemblyName>Medium.Persistence.Mongo</AssemblyName>
+    <PackageId>Medium.Persistence.Mongo</PackageId>
+    <PackageProjectUrl>https://github.com/noordwind/Medium</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/noordwind/Medium/blob/master/LICENSE</PackageLicenseUrl>
+    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Medium/Medium.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.4.2" />
+  </ItemGroup>
+
+</Project>

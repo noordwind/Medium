@@ -1,6 +1,6 @@
 # Medium
 
-####**Your medium amongst webhooks.**
+## Your medium amongst webhooks.
 
 |Branch             |Build status                                                  
 |-------------------|-----------------------------------------------------
@@ -11,10 +11,10 @@
 **What is Medium?**
 ----------------
 
-It's a library built in order to help you consume the webhooks that can be invoked from different services like build servers, package managers, source control systems, custom APIs etc. 
+The library built in order to help consume the webhooks that can be invoked from different services like build servers, package managers, source control systems, custom APIs etc. 
 and based on the received input validate such requests and execute any type of actions that you would like.
 
-For example, you might be using a service A that is capable of sending webhooks to the given URL. On the other hand, there could be a service B, that you would like to 
+For example, you might be using some service A that is capable of sending webhooks to the given URL. On the other hand, there could be another service B, that you would like to 
 send a custom request to, based on the input from service A. This is where the **Medium** comes in handy - it can act as as a sort of middleware, that will process the 
 request from service A, validate it based on the set of defined rules, transform (if needed) into a separate object and eventually send a request to the service B (or more services).
 
@@ -40,8 +40,8 @@ Please note that *Medium* does not require to use *ASP.NET Core*, as it's a simp
 
 Install packages via NuGet:
 ```
-Install-Package Medium -Pre
-Install-Package Medium.Integrations.AspNetCore -Pre
+Install-Package Medium
+Install-Package Medium.Integrations.AspNetCore
 ```
 
 Create a *medium.json* file in the main directory, where you can define the configuration:

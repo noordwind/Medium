@@ -1,19 +1,19 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.0.0
-MinimumVisualStudioVersion = 10.0.0.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Medium.Tests", "Medium.Tests\Medium.Tests.xproj", "{F447F9E8-3B16-4D1F-A587-27BA3885AD60}"
+# Visual Studio 15
+VisualStudioVersion = 15.0.26114.2
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medium.Tests", "Medium.Tests\Medium.Tests.csproj", "{F447F9E8-3B16-4D1F-A587-27BA3885AD60}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Medium.Api", "Medium.Api\Medium.Api.xproj", "{721E81CA-5AE5-491E-8AC2-017A4250DD83}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medium.Api", "Medium.Api\Medium.Api.csproj", "{721E81CA-5AE5-491E-8AC2-017A4250DD83}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Medium", "Medium\Medium.xproj", "{B1A3C785-A087-4FAA-BD1C-79367F319E07}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medium", "Medium\Medium.csproj", "{B1A3C785-A087-4FAA-BD1C-79367F319E07}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Medium.Persistence.Mongo", "Medium.Persistence.Mongo\Medium.Persistence.Mongo.xproj", "{9D91CFC7-9E4E-45F7-BDD0-D18A27B39B69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medium.Persistence.Mongo", "Medium.Persistence.Mongo\Medium.Persistence.Mongo.csproj", "{9D91CFC7-9E4E-45F7-BDD0-D18A27B39B69}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Medium.Integrations.AspNetCore", "Medium.Integrations.AspNetCore\Medium.Integrations.AspNetCore.xproj", "{FB5D1CCF-466C-49DA-843F-A5B7C3E52A1F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medium.Integrations.AspNetCore", "Medium.Integrations.AspNetCore\Medium.Integrations.AspNetCore.csproj", "{FB5D1CCF-466C-49DA-843F-A5B7C3E52A1F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Medium.Integrations.Lockbox", "Medium.Integrations.Lockbox\Medium.Integrations.Lockbox.xproj", "{6A4CA2C5-AAEF-41B4-B9FC-39060146AF13}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medium.Integrations.Lockbox", "Medium.Integrations.Lockbox\Medium.Integrations.Lockbox.csproj", "{6A4CA2C5-AAEF-41B4-B9FC-39060146AF13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
