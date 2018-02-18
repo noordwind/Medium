@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Medium.Domain;
 using Newtonsoft.Json.Linq;
+using Microsoft.CSharp;
 
 namespace Medium.Services
 {
@@ -15,7 +16,6 @@ namespace Medium.Services
             {
                 return true;
             }
-
             var entries = new JsonParser().Parse((JObject)request);
             foreach(var mappedRule in rules)
             {

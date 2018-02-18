@@ -1,4 +1,5 @@
 using System;
+using FluentAssertions;
 using Machine.Specifications;
 using Medium.Domain;
 
@@ -22,13 +23,13 @@ namespace Medium.Tests.Specs.Domain
 
         Because of = () => Initialize();
 
-        It should_not_be_null = () => Webhook.ShouldNotBeNull();
-        It should_have_assigned_id = () => Webhook.Id.ShouldNotEqual(Guid.Empty);
-        It should_have_assigned_name = () => Webhook.Name.ShouldEqual(Name.ToLowerInvariant());
-        It should_have_assigned_endpoint = () => Webhook.Endpoint.ShouldEqual(Name.Replace(" ", "-").ToLowerInvariant());
-        It should_be_active = () => Webhook.Inactive.ShouldBeFalse();
-        It should_not_have_any_actions = () => Webhook.Actions.ShouldBeEmpty();
-        It should_not_have_any_triggers = () => Webhook.Triggers.ShouldBeEmpty();
+        It should_not_be_null = () => Webhook.Should().NotBeNull();
+        It should_have_assigned_id = () => Webhook.Id.Should().NotBe(Guid.Empty);
+        It should_have_assigned_name = () => Webhook.Name.Should().Be(Name.ToLowerInvariant());
+        It should_have_assigned_endpoint = () => Webhook.Endpoint.Should().Be(Name.Replace(" ", "-").ToLowerInvariant());
+        It should_be_active = () => Webhook.Inactive.Should().BeFalse();
+        It should_not_have_any_actions = () => Webhook.Actions.Should().BeEmpty();
+        It should_not_have_any_triggers = () => Webhook.Triggers.Should().BeEmpty();
     }
 
     [Subject("Webhook initialize without name")]
@@ -40,12 +41,12 @@ namespace Medium.Tests.Specs.Domain
 
         It should_throw_argument_exception = () =>
         {
-            Exception.ShouldBeOfExactType<ArgumentException>();
+            Exception.Should().BeOfType<ArgumentException>();
         };
 
         It should_contain_error_message = () =>
         {
-            Exception.Message.ShouldStartWith("Webhook name can not be empty.");
+            Exception.Message.Should().StartWith("Webhook name can not be empty.");
         };
     }
 }

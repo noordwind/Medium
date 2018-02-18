@@ -40,8 +40,8 @@ Please note that *Medium* does not require to use *ASP.NET Core*, as it's a simp
 
 Install packages via NuGet:
 ```
-Install-Package Medium
-Install-Package Medium.Integrations.AspNetCore
+dotnet add package Medium
+dotnet add package Medium.Integrations.AspNetCore
 ```
 
 Create a *medium.json* file in the main directory, where you can define the configuration:

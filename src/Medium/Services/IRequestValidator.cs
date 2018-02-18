@@ -1,5 +1,5 @@
-using Medium.Domain;
 using System.Collections.Generic;
+using Medium.Domain;
 
 namespace Medium.Services
 {
